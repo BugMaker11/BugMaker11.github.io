@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>My New Post</title>
+    <url>/2023/03/20/My-New-Post/</url>
+    <content><![CDATA[<span id="more"></span>
+
+<p><strong>Hello! it’s my first blog.</strong></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>hexo 设置</title>
+    <url>/2023/03/20/hexo-%E8%AE%BE%E7%BD%AE/</url>
+    <content><![CDATA[<span id="more"></span>
+
+<h3 id="hexo-常用命令"><a href="#hexo-常用命令" class="headerlink" title="hexo 常用命令"></a>hexo 常用命令</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new &quot;name&quot; 	 #新建文章</span><br><span class="line">hexo new page &quot;name&quot; #新建页面</span><br><span class="line">hexo g 				 #生成页面</span><br><span class="line">hexo d				 #部署</span><br><span class="line">hexo s				 #本地预览</span><br><span class="line">hexo clean 			 #清除缓存和已生成的静态文件</span><br><span class="line">hexo help			 #帮助</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="hexo-美化"><a href="#hexo-美化" class="headerlink" title="hexo 美化"></a>hexo 美化</h3><p>….未完待续</p>
+]]></content>
+      <tags>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2023/03/20/hello-world/</url>
+    <content><![CDATA[<span id="more"></span>
+
+<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Windows 动手学深度学习环境配置</title>
+    <url>/2023/03/20/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<span id="more"></span>
+
+<h4 id="参考教程与视频"><a href="#参考教程与视频" class="headerlink" title="参考教程与视频"></a>参考教程与视频</h4><p>本文主要参考李沐在B站发布的视频:<a href="https://www.bilibili.com/video/BV18K411w7Vs/?spm_id_from=333.999.0.0&vd_source=4d05ddde14c10a4b5df542785dd6efc5">Windows 下安装 CUDA 和 Pytorch 跑深度学习 - 动手学深度学习v2_哔哩哔哩_bilibili</a></p>
+<h4 id="看前提醒"><a href="#看前提醒" class="headerlink" title="看前提醒"></a>看前提醒</h4><ol>
+<li>本文基于Windows环境安装.</li>
+<li>本文安装GPU版本的pytorch，不含独立显卡的电脑不能安装GUP版本pytorch.</li>
+<li></li>
+</ol>
+<h4 id="检查电脑显卡"><a href="#检查电脑显卡" class="headerlink" title="检查电脑显卡"></a>检查电脑显卡</h4><p><code>windows + r</code> 后输入 <code>dxdiag</code> 打开 <code>DirectX诊断工具</code> ,选择显示栏,查看是否有独立显卡.</p>
+<h4 id="下载CUDA"><a href="#下载CUDA" class="headerlink" title="下载CUDA"></a>下载CUDA</h4><p>在CUDA官网中找到想要下载的CUDA版本和下载方式,我选择的是11 Version,下载方式为：exe(local)。选择好后点击 download 开始下载.</p>
+<p>下载地址：<a href="https://developer.nvidia.com/cuda-downloads?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local">CUDA Toolkit 12.1 Downloads | NVIDIA Developer</a></p>
+<p><img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320205838829.png" alt="image-20230320205838829"></p>
+<p>下载完成后解压并默认安装。</p>
+<p>安装后点击 <code>win + r</code> ,输入 <code>cmd</code> 进入命令行界面,输入<code>nvidia-smi</code> 检查 CUDA 是否安装成功.</p>
+<p><img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320210301689.png" alt="image-20230320210301689"></p>
+<h4 id="安装anaconda"><a href="#安装anaconda" class="headerlink" title="安装anaconda"></a>安装anaconda</h4><p>李沐老师在视频中安装的是 miniconda ,因为 anaconda 有图形化界面可以操作,我选择下载 anaconda.</p>
+<p>搜索 anaconda 进入 anaconda 官网,选择 download 进行下载.下载完成后选择默认进行安装.</p>
+<p>安装完成后打开 anaconda prompt 输入 python 查看能否进入 python 环境.</p>
+<p>参考网址:<a href="https://www.anaconda.com/">https://www.anaconda.com</a></p>
+<h4 id="安装PyTorch"><a href="#安装PyTorch" class="headerlink" title="安装PyTorch"></a>安装PyTorch</h4><p>搜索 pytorch 进入 PyTorch 官方网站, 点击 install 后选择:</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PyTorch Build</td>
+<td>Stable(2.0.0)</td>
+</tr>
+<tr>
+<td>Your OS</td>
+<td>Windows</td>
+</tr>
+<tr>
+<td>Package</td>
+<td>Pip</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>Python</td>
+</tr>
+<tr>
+<td>Compute Platform</td>
+<td>CUDA 11.8</td>
+</tr>
+</tbody></table>
+<p>选择完后将下方 <code>Run this Command:</code> 栏的命令复制到 anaconda prompt 中回车安装.</p>
+<p>注意:</p>
+<ul>
+<li>李沐老师推荐安装与 CUDA版本一致的 PyTorch 版本,就算不完全一致也应该选择大版本一致的 PyTorch 版本.</li>
+<li>安装时应关闭代理,我在打开代理时安装多次安装不成功.</li>
+</ul>
+<p>安装完成后输入 python 进入 python 环境,输入以下代码检测是否成功安装:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">a = torch.ones((<span class="number">3</span>,<span class="number">1</span>))</span><br><span class="line">a = a.cuda(<span class="number">0</span>)</span><br><span class="line">b = torch.ones((<span class="number">3</span>,<span class="number">1</span>)).cuda(<span class="number">0</span>)</span><br><span class="line">a + b</span><br></pre></td></tr></table></figure>
+
+<p>看到如下输出则成功安装:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensor([[<span class="number">2.</span>],</span><br><span class="line">        [<span class="number">2.</span>],</span><br><span class="line">        [<span class="number">2.</span>]],device=<span class="string">&#x27;cuda:0&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="下载课程"><a href="#下载课程" class="headerlink" title="下载课程"></a>下载课程</h4><p>进入动手学深度学习官网:<a href="https://zh.d2l.ai/">《动手学深度学习》 — 动手学深度学习 2.0.0 documentation (d2l.ai)</a></p>
+<p>点击 <code>Jupyter 记事本</code> 下载课程内容.下载完成后解压到本地.</p>
+<p><img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320212516743.png" alt="image-20230320212516743"></p>
+<p>打开 Anaconda Prompt ,输入如下命令,安装所需要的包.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install jupyter d2l</span><br></pre></td></tr></table></figure>
+
+<p>最后,打开课程所在目录, 按  <code>shift + 鼠标右键</code> 选择在此处打开 Powershell 窗口,在命令行中输入 <code>jupyter notebook</code> 就可以成功打开课程的记事本!</p>
+<img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320213115708.png" alt="image-20230320213115708" style="zoom: 67%;" />
+
+<p><img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320213324026.png" alt="image-20230320213324026"></p>
+]]></content>
+      <categories>
+        <category>动手学深度学习</category>
+      </categories>
+      <tags>
+        <tag>环境配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>动手学深度学习-数据操作,预处理笔记</title>
+    <url>/2023/03/20/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C-%E9%A2%84%E5%A4%84%E7%90%86%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="数据操作"><a href="#数据操作" class="headerlink" title="数据操作"></a>数据操作</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>torch.arange(n)<br>生成从0到n-1的所有整数作为一个张量,n&#x3D;0时张量为空</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.arange(<span class="number">12</span>)</span><br><span class="line">x</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>tensor([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.arange(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>tensor([], dtype=torch.int64)
+</code></pre>
+<p><strong>x.shape</strong><br>输出张量的形状(每个轴的长度)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x.shape</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>torch.Size([12])
+</code></pre>
+<p>求张量中元素的总数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x.numel()</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>12
+</code></pre>
+<p>改变张量的形状,可以输入张量每个维度的长度,也可以少输入一个维度的长度,因为可以自动推断出那个维度的长度.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X = x.reshape(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">X</span><br><span class="line">X.shape</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>torch.Size([3, 4])
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X = x.reshape(<span class="number">3</span>,<span class="number">2</span>,-<span class="number">1</span>)</span><br><span class="line">X</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>tensor([[[ 0,  1],
+         [ 2,  3]],
+
+        [[ 4,  5],
+         [ 6,  7]],
+
+        [[ 8,  9],
+         [10, 11]]])
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x.reshape(-<span class="number">1</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>tensor([[ 0,  1,  2,  3],
+        [ 4,  5,  6,  7],
+        [ 8,  9, 10, 11]])
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x.reshape(<span class="number">3</span>,-<span class="number">1</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<pre><code>tensor([[ 0,  1,  2,  3],
+        [ 4,  5,  6,  7],
+        [ 8,  9, 10, 11]])
+</code></pre>
+<p>torch.zeros((n1,…)):创建全0的张量<br>torch.ones((n1,n2,n3,…))创建全1的张量</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.zeros((<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor([[[0., 0., 0., 0.],
+         [0., 0., 0., 0.],
+         [0., 0., 0., 0.]],
+
+        [[0., 0., 0., 0.],
+         [0., 0., 0., 0.],
+         [0., 0., 0., 0.]]])
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.ones((<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor([[[1., 1., 1., 1.],
+         [1., 1., 1., 1.],
+         [1., 1., 1., 1.]],
+
+        [[1., 1., 1., 1.],
+         [1., 1., 1., 1.],
+         [1., 1., 1., 1.]]])
+</code></pre>
+<p>创建正态分布随机数构成的张量</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.randn(<span class="number">3</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor([[-1.0532, -1.2373,  1.5930, -1.3120],
+        [ 1.7310, -0.5996,  0.6864, -1.3625],
+        [-0.4236,  0.8607,  0.0581, -1.2500]])
+</code></pre>
+<p>为创建的张量赋值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.tensor([[<span class="number">2</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">3</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>]])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor([[2, 1, 4, 3],
+        [1, 2, 3, 4],
+        [4, 3, 2, 1]])
+</code></pre>
+<p>张量的计算 + - * &#x2F; **<br>x ** y 表示x的y次幂</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.tensor([<span class="number">1.0</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">8</span>])</span><br><span class="line">y = torch.tensor([<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>])</span><br><span class="line">x+y , x-y , x*y , x/y , x**y</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(tensor([ 3.,  4.,  6., 10.]),
+ tensor([-1.,  0.,  2.,  6.]),
+ tensor([ 2.,  4.,  8., 16.]),
+ tensor([0.5000, 1.0000, 2.0000, 4.0000]),
+ tensor([ 1.,  4., 16., 64.]))
+</code></pre>
+<p>对张量中的每个元素求幂运算</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">torch.exp(x)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor([2.7183e+00, 7.3891e+00, 5.4598e+01, 2.9810e+03])
+</code></pre>
+<p>将两个张量合并在一起 torch.cat( (x,y),dim&#x3D;?)<br>dim&#x3D;0时表示按行合并<br>dim&#x3D;1时表示按列合并</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X = torch.arange(<span class="number">12</span>,dtype=torch.float32).reshape(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">Y = torch.tensor([[<span class="number">2.0</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">3</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>]])</span><br><span class="line">torch.cat((X,Y),dim=<span class="number">0</span>),torch.cat((X,Y),dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果:</p>
+<pre><code>(tensor([[ 0.,  1.,  2.,  3.],
+         [ 4.,  5.,  6.,  7.],
+         [ 8.,  9., 10., 11.],
+         [ 2.,  1.,  4.,  3.],
+         [ 1.,  2.,  3.,  4.],
+         [ 4.,  3.,  2.,  1.]]),
+ tensor([[ 0.,  1.,  2.,  3.,  2.,  1.,  4.,  3.],
+         [ 4.,  5.,  6.,  7.,  1.,  2.,  3.,  4.],
+         [ 8.,  9., 10., 11.,  4.,  3.,  2.,  1.]]))
+</code></pre>
+<p>逻辑运算符构建二元张量</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X == Y</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>tensor([[False,  True, False,  True],
+        [False, False, False, False],
+        [False, False, False, False]])
+</code></pre>
+<p>对张量中的所有元素进行求和</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X.<span class="built_in">sum</span>()</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>tensor(66.)
+</code></pre>
+<p>广播机制:</p>
+<p>当两个张量的形状不同时,通过广播机制可以使两个张量通过复制元素变成相同的形状,比如下面的例子中 a + b 后 a , b的形状就分别从 (3,1) 和 (1,2) 变成 (3,2)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = torch.arange(<span class="number">3</span>).reshape((<span class="number">3</span>,<span class="number">1</span>))</span><br><span class="line">b = torch.arange(<span class="number">2</span>).reshape((<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">a,b</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>(tensor([[0],
+         [1],
+         [2]]),
+ tensor([[0, 1]]))
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a + b</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>tensor([[0, 1],
+        [1, 2],
+        [2, 3]])
+</code></pre>
+<p>索引和切片</p>
+<p>张量可以直接通过 [数字] 进行索引,同时选择多个元素就是切片,通过 数字:数字 实现.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X[-<span class="number">1</span>],X[<span class="number">1</span>:<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>(tensor([ 8.,  9., 10., 11.]),
+ tensor([[ 4.,  5.,  6.,  7.],
+         [ 8.,  9., 10., 11.]]))
+</code></pre>
+<p>除读取外还可以通过指定索引来将元素写入矩阵</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X[<span class="number">1</span>,<span class="number">2</span>] = <span class="number">9</span></span><br><span class="line">X</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>tensor([[ 0.,  1.,  2.,  3.],
+        [ 4.,  5.,  9.,  7.],
+        [ 8.,  9., 10., 11.]])
+</code></pre>
+<p>可以同时为多个元素赋值,只有一个:时表示所有元素</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X[<span class="number">0</span>:<span class="number">2</span>, :] = <span class="number">12</span></span><br><span class="line">X</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>tensor([[12., 12., 12., 12.],
+        [12., 12., 12., 12.],
+        [ 8.,  9., 10., 11.]])
+</code></pre>
+<p>执行原地操作,用[:]将张量中的所有元素改写而不是用结果创建一个新的变量</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Z = torch.zeros_like(Y)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;id(Z)&quot;</span>,<span class="built_in">id</span>(Z))</span><br><span class="line">Z[:] = X + Y</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;id(Z)&quot;</span>,<span class="built_in">id</span>(Z))</span><br></pre></td></tr></table></figure>
+
+<pre><code>id(Z) 1382002751504
+id(Z) 1382002751504
+</code></pre>
+<p>类型转换</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">A = X.numpy()</span><br><span class="line">B = torch.tensor(A)</span><br><span class="line"><span class="built_in">type</span>(A),<span class="built_in">type</span>(B)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(numpy.ndarray, torch.Tensor)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = torch.tensor([<span class="number">3.5</span>])</span><br><span class="line">a,a.item(),<span class="built_in">float</span>(a),<span class="built_in">int</span>(a)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(tensor([3.5000]), 3.5, 3.5, 3)
+</code></pre>
+<h1 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h1><p>首先(<strong>创建一个人工数据集，并存储在CSV（逗号分隔值）文件</strong>) <code>../data/house_tiny.csv</code>中。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">os.makedirs(os.path.join(<span class="string">&#x27;..&#x27;</span>,<span class="string">&#x27;data&#x27;</span>),exist_ok=<span class="literal">True</span>)</span><br><span class="line">data_file = os.path.join(<span class="string">&#x27;..&#x27;</span>,<span class="string">&#x27;data&#x27;</span>,<span class="string">&#x27;house_tiny.csv&#x27;</span>)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(data_file,<span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">&#x27;NumRooms,Alley,Price\n&#x27;</span>)</span><br><span class="line">    f.write(<span class="string">&#x27;NA,Pave,127500\n&#x27;</span>)</span><br><span class="line">    f.write(<span class="string">&#x27;2,NA,10600\n&#x27;</span>)</span><br><span class="line">    f.write(<span class="string">&#x27;4,NA,178100\n&#x27;</span>)</span><br><span class="line">    f.write(<span class="string">&#x27;NA,NA,140000\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>从创建的CSV文件中加载原始数据集</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">!pip install pandas</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">data = pd.read_csv(data_file)</span><br><span class="line">data</span><br></pre></td></tr></table></figure>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }</style>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NumRooms</th>
+      <th>Alley</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NaN</td>
+      <td>Pave</td>
+      <td>127500</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>10600</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>178100</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>140000</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+<p>为了处理缺失的数据，我们用插值法,将缺失的房间数插值为房间数的平均值.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">inputs,outputs = data.iloc[:,<span class="number">0</span>:<span class="number">2</span>],data.iloc[:,<span class="number">2</span>]</span><br><span class="line">inputs = inputs.fillna(inputs.mean())</span><br><span class="line"><span class="built_in">print</span>(inputs)</span><br></pre></td></tr></table></figure>
+
+<pre><code>   NumRooms Alley
+0       3.0  Pave
+1       2.0   NaN
+2       4.0   NaN
+3       3.0   NaN
+</code></pre>
+<p>将缺失的Alley单独视为一类,数值为1,不缺失的房子则为0</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">inputs = pd.get_dummies(inputs,dummy_na=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(inputs)</span><br></pre></td></tr></table></figure>
+
+<pre><code>   NumRooms  Alley_Pave  Alley_nan
+0       3.0           1          0
+1       2.0           0          1
+2       4.0           0          1
+3       3.0           0          1
+</code></pre>
+<p>将inputs 和 outputs 中的所有条目转换为张量格式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">X,y = torch.tensor(inputs.values),torch.tensor(outputs.values)</span><br><span class="line">X,y</span><br></pre></td></tr></table></figure>
+
+<p>输出结果:</p>
+<pre><code>(tensor([[3., 1., 0.],
+         [2., 0., 1.],
+         [4., 0., 1.],
+         [3., 0., 1.]], dtype=torch.float64),
+ tensor([127500,  10600, 178100, 140000]))
+</code></pre>
+<p>练习:创建原始数据集,删除缺失值最多的列,将预处理后的数据集转换为张量格式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">os.makedirs(os.path.join(<span class="string">&#x27;..&#x27;</span>,<span class="string">&#x27;data&#x27;</span>),exist_ok=<span class="literal">True</span>)</span><br><span class="line">data_file = os.path.join(<span class="string">&#x27;..&#x27;</span>,<span class="string">&#x27;data&#x27;</span>,<span class="string">&#x27;information.csv&#x27;</span>)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(data_file,<span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">&#x27;Name,Age,Height,Gender,Province,Grades\n&#x27;</span>)</span><br><span class="line">    f.write(<span class="string">&#x27;NA,12,175,&quot;men&quot;,&quot;henan&quot;,100\n&#x27;</span>)</span><br><span class="line">    f.write(<span class="string">&#x27;&quot;xiaoming&quot;,NA,180,&quot;girl&quot;,&quot;hebei&quot;,80\n&#x27;</span>)</span><br><span class="line">    f.write(<span class="string">&#x27;&quot;xiaoli&quot;,17,174,NA,NA,90\n&#x27;</span>)</span><br><span class="line">    f.write(<span class="string">&#x27;&quot;xiaoqiang&quot;,NA,168,&quot;girl&quot;,NA,70\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">data = pd.read_csv(data_file)</span><br><span class="line">data</span><br></pre></td></tr></table></figure>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Height</th>
+      <th>Gender</th>
+      <th>Province</th>
+      <th>Grades</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NaN</td>
+      <td>12.0</td>
+      <td>175</td>
+      <td>men</td>
+      <td>henan</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>xiaoming</td>
+      <td>NaN</td>
+      <td>180</td>
+      <td>girl</td>
+      <td>hebei</td>
+      <td>80</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>xiaoli</td>
+      <td>17.0</td>
+      <td>174</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>90</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>xiaoqiang</td>
+      <td>NaN</td>
+      <td>168</td>
+      <td>girl</td>
+      <td>NaN</td>
+      <td>70</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+]]></content>
+      <categories>
+        <category>动手学深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习笔记</tag>
+      </tags>
+  </entry>
+</search>
