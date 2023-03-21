@@ -9,21 +9,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>hexo 设置</title>
-    <url>/2023/03/20/hexo-%E8%AE%BE%E7%BD%AE/</url>
-    <content><![CDATA[<span id="more"></span>
-
-<h3 id="hexo-常用命令"><a href="#hexo-常用命令" class="headerlink" title="hexo 常用命令"></a>hexo 常用命令</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new &quot;name&quot; 	 #新建文章</span><br><span class="line">hexo new page &quot;name&quot; #新建页面</span><br><span class="line">hexo g 				 #生成页面</span><br><span class="line">hexo d				 #部署</span><br><span class="line">hexo s				 #本地预览</span><br><span class="line">hexo clean 			 #清除缓存和已生成的静态文件</span><br><span class="line">hexo help			 #帮助</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="hexo-美化"><a href="#hexo-美化" class="headerlink" title="hexo 美化"></a>hexo 美化</h3><p>….未完待续</p>
-]]></content>
-      <tags>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/2023/03/20/hello-world/</url>
     <content><![CDATA[<span id="more"></span>
@@ -44,84 +29,18 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Windows 动手学深度学习环境配置</title>
-    <url>/2023/03/20/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</url>
+    <title>hexo 设置</title>
+    <url>/2023/03/20/hexo-%E8%AE%BE%E7%BD%AE/</url>
     <content><![CDATA[<span id="more"></span>
 
-<h4 id="参考教程与视频"><a href="#参考教程与视频" class="headerlink" title="参考教程与视频"></a>参考教程与视频</h4><p>本文主要参考李沐在B站发布的视频:<a href="https://www.bilibili.com/video/BV18K411w7Vs/?spm_id_from=333.999.0.0&vd_source=4d05ddde14c10a4b5df542785dd6efc5">Windows 下安装 CUDA 和 Pytorch 跑深度学习 - 动手学深度学习v2_哔哩哔哩_bilibili</a></p>
-<h4 id="看前提醒"><a href="#看前提醒" class="headerlink" title="看前提醒"></a>看前提醒</h4><ol>
-<li>本文基于Windows环境安装.</li>
-<li>本文安装GPU版本的pytorch，不含独立显卡的电脑不能安装GUP版本pytorch.</li>
-<li></li>
-</ol>
-<h4 id="检查电脑显卡"><a href="#检查电脑显卡" class="headerlink" title="检查电脑显卡"></a>检查电脑显卡</h4><p><code>windows + r</code> 后输入 <code>dxdiag</code> 打开 <code>DirectX诊断工具</code> ,选择显示栏,查看是否有独立显卡.</p>
-<h4 id="下载CUDA"><a href="#下载CUDA" class="headerlink" title="下载CUDA"></a>下载CUDA</h4><p>在CUDA官网中找到想要下载的CUDA版本和下载方式,我选择的是11 Version,下载方式为：exe(local)。选择好后点击 download 开始下载.</p>
-<p>下载地址：<a href="https://developer.nvidia.com/cuda-downloads?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local">CUDA Toolkit 12.1 Downloads | NVIDIA Developer</a></p>
-<p><img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320205838829.png" alt="image-20230320205838829"></p>
-<p>下载完成后解压并默认安装。</p>
-<p>安装后点击 <code>win + r</code> ,输入 <code>cmd</code> 进入命令行界面,输入<code>nvidia-smi</code> 检查 CUDA 是否安装成功.</p>
-<p><img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320210301689.png" alt="image-20230320210301689"></p>
-<h4 id="安装anaconda"><a href="#安装anaconda" class="headerlink" title="安装anaconda"></a>安装anaconda</h4><p>李沐老师在视频中安装的是 miniconda ,因为 anaconda 有图形化界面可以操作,我选择下载 anaconda.</p>
-<p>搜索 anaconda 进入 anaconda 官网,选择 download 进行下载.下载完成后选择默认进行安装.</p>
-<p>安装完成后打开 anaconda prompt 输入 python 查看能否进入 python 环境.</p>
-<p>参考网址:<a href="https://www.anaconda.com/">https://www.anaconda.com</a></p>
-<h4 id="安装PyTorch"><a href="#安装PyTorch" class="headerlink" title="安装PyTorch"></a>安装PyTorch</h4><p>搜索 pytorch 进入 PyTorch 官方网站, 点击 install 后选择:</p>
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>PyTorch Build</td>
-<td>Stable(2.0.0)</td>
-</tr>
-<tr>
-<td>Your OS</td>
-<td>Windows</td>
-</tr>
-<tr>
-<td>Package</td>
-<td>Pip</td>
-</tr>
-<tr>
-<td>Language</td>
-<td>Python</td>
-</tr>
-<tr>
-<td>Compute Platform</td>
-<td>CUDA 11.8</td>
-</tr>
-</tbody></table>
-<p>选择完后将下方 <code>Run this Command:</code> 栏的命令复制到 anaconda prompt 中回车安装.</p>
-<p>注意:</p>
-<ul>
-<li>李沐老师推荐安装与 CUDA版本一致的 PyTorch 版本,就算不完全一致也应该选择大版本一致的 PyTorch 版本.</li>
-<li>安装时应关闭代理,我在打开代理时安装多次安装不成功.</li>
-</ul>
-<p>安装完成后输入 python 进入 python 环境,输入以下代码检测是否成功安装:</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">a = torch.ones((<span class="number">3</span>,<span class="number">1</span>))</span><br><span class="line">a = a.cuda(<span class="number">0</span>)</span><br><span class="line">b = torch.ones((<span class="number">3</span>,<span class="number">1</span>)).cuda(<span class="number">0</span>)</span><br><span class="line">a + b</span><br></pre></td></tr></table></figure>
+<h3 id="hexo-常用命令"><a href="#hexo-常用命令" class="headerlink" title="hexo 常用命令"></a>hexo 常用命令</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new &quot;name&quot; 	 #新建文章</span><br><span class="line">hexo new page &quot;name&quot; #新建页面</span><br><span class="line">hexo g 				 #生成页面</span><br><span class="line">hexo d				 #部署</span><br><span class="line">hexo s				 #本地预览</span><br><span class="line">hexo clean 			 #清除缓存和已生成的静态文件</span><br><span class="line">hexo help			 #帮助</span><br></pre></td></tr></table></figure>
 
-<p>看到如下输出则成功安装:</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensor([[<span class="number">2.</span>],</span><br><span class="line">        [<span class="number">2.</span>],</span><br><span class="line">        [<span class="number">2.</span>]],device=<span class="string">&#x27;cuda:0&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
-<h4 id="下载课程"><a href="#下载课程" class="headerlink" title="下载课程"></a>下载课程</h4><p>进入动手学深度学习官网:<a href="https://zh.d2l.ai/">《动手学深度学习》 — 动手学深度学习 2.0.0 documentation (d2l.ai)</a></p>
-<p>点击 <code>Jupyter 记事本</code> 下载课程内容.下载完成后解压到本地.</p>
-<p><img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320212516743.png" alt="image-20230320212516743"></p>
-<p>打开 Anaconda Prompt ,输入如下命令,安装所需要的包.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install jupyter d2l</span><br></pre></td></tr></table></figure>
 
-<p>最后,打开课程所在目录, 按  <code>shift + 鼠标右键</code> 选择在此处打开 Powershell 窗口,在命令行中输入 <code>jupyter notebook</code> 就可以成功打开课程的记事本!</p>
-<img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320213115708.png" alt="image-20230320213115708" style="zoom: 67%;" />
-
-<p><img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320213324026.png" alt="image-20230320213324026"></p>
+<h3 id="hexo-美化"><a href="#hexo-美化" class="headerlink" title="hexo 美化"></a>hexo 美化</h3><p>….未完待续</p>
 ]]></content>
-      <categories>
-        <category>动手学深度学习</category>
-      </categories>
       <tags>
-        <tag>环境配置</tag>
+        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -496,6 +415,87 @@ id(Z) 1382002751504
       </categories>
       <tags>
         <tag>深度学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows 动手学深度学习环境配置</title>
+    <url>/2023/03/20/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<span id="more"></span>
+
+<h4 id="参考教程与视频"><a href="#参考教程与视频" class="headerlink" title="参考教程与视频"></a>参考教程与视频</h4><p>本文主要参考李沐在B站发布的视频:<a href="https://www.bilibili.com/video/BV18K411w7Vs/?spm_id_from=333.999.0.0&vd_source=4d05ddde14c10a4b5df542785dd6efc5">Windows 下安装 CUDA 和 Pytorch 跑深度学习 - 动手学深度学习v2_哔哩哔哩_bilibili</a></p>
+<h4 id="看前提醒"><a href="#看前提醒" class="headerlink" title="看前提醒"></a>看前提醒</h4><ol>
+<li>本文基于Windows环境安装.</li>
+<li>本文安装GPU版本的pytorch，不含独立显卡的电脑不能安装GUP版本pytorch.</li>
+<li></li>
+</ol>
+<h4 id="检查电脑显卡"><a href="#检查电脑显卡" class="headerlink" title="检查电脑显卡"></a>检查电脑显卡</h4><p><code>windows + r</code> 后输入 <code>dxdiag</code> 打开 <code>DirectX诊断工具</code> ,选择显示栏,查看是否有独立显卡.</p>
+<h4 id="下载CUDA"><a href="#下载CUDA" class="headerlink" title="下载CUDA"></a>下载CUDA</h4><p>在CUDA官网中找到想要下载的CUDA版本和下载方式,我选择的是11 Version,下载方式为：exe(local)。选择好后点击 download 开始下载.</p>
+<p>下载地址：<a href="https://developer.nvidia.com/cuda-downloads?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local">CUDA Toolkit 12.1 Downloads | NVIDIA Developer</a></p>
+<p><img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320205838829.png" alt="image-20230320205838829"></p>
+<p>下载完成后解压并默认安装。</p>
+<p>安装后点击 <code>win + r</code> ,输入 <code>cmd</code> 进入命令行界面,输入<code>nvidia-smi</code> 检查 CUDA 是否安装成功.</p>
+<p><img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320210301689.png" alt="image-20230320210301689"></p>
+<h4 id="安装anaconda"><a href="#安装anaconda" class="headerlink" title="安装anaconda"></a>安装anaconda</h4><p>李沐老师在视频中安装的是 miniconda ,因为 anaconda 有图形化界面可以操作,我选择下载 anaconda.</p>
+<p>搜索 anaconda 进入 anaconda 官网,选择 download 进行下载.下载完成后选择默认进行安装.</p>
+<p>安装完成后打开 anaconda prompt 输入 python 查看能否进入 python 环境.</p>
+<p>参考网址:<a href="https://www.anaconda.com/">https://www.anaconda.com</a></p>
+<h4 id="安装PyTorch"><a href="#安装PyTorch" class="headerlink" title="安装PyTorch"></a>安装PyTorch</h4><p>搜索 pytorch 进入 PyTorch 官方网站, 点击 install 后选择:</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PyTorch Build</td>
+<td>Stable(2.0.0)</td>
+</tr>
+<tr>
+<td>Your OS</td>
+<td>Windows</td>
+</tr>
+<tr>
+<td>Package</td>
+<td>Pip</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>Python</td>
+</tr>
+<tr>
+<td>Compute Platform</td>
+<td>CUDA 11.8</td>
+</tr>
+</tbody></table>
+<p>选择完后将下方 <code>Run this Command:</code> 栏的命令复制到 anaconda prompt 中回车安装.</p>
+<p>注意:</p>
+<ul>
+<li>李沐老师推荐安装与 CUDA版本一致的 PyTorch 版本,就算不完全一致也应该选择大版本一致的 PyTorch 版本.</li>
+<li>安装时应关闭代理,我在打开代理时安装多次安装不成功.</li>
+</ul>
+<p>安装完成后输入 python 进入 python 环境,输入以下代码检测是否成功安装:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">a = torch.ones((<span class="number">3</span>,<span class="number">1</span>))</span><br><span class="line">a = a.cuda(<span class="number">0</span>)</span><br><span class="line">b = torch.ones((<span class="number">3</span>,<span class="number">1</span>)).cuda(<span class="number">0</span>)</span><br><span class="line">a + b</span><br></pre></td></tr></table></figure>
+
+<p>看到如下输出则成功安装:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensor([[<span class="number">2.</span>],</span><br><span class="line">        [<span class="number">2.</span>],</span><br><span class="line">        [<span class="number">2.</span>]],device=<span class="string">&#x27;cuda:0&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="下载课程"><a href="#下载课程" class="headerlink" title="下载课程"></a>下载课程</h4><p>进入动手学深度学习官网:<a href="https://zh.d2l.ai/">《动手学深度学习》 — 动手学深度学习 2.0.0 documentation (d2l.ai)</a></p>
+<p>点击 <code>Jupyter 记事本</code> 下载课程内容.下载完成后解压到本地.</p>
+<p><img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320212516743.png" alt="image-20230320212516743"></p>
+<p>打开 Anaconda Prompt ,输入如下命令,安装所需要的包.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install jupyter d2l</span><br></pre></td></tr></table></figure>
+
+<p>最后,打开课程所在目录, 按  <code>shift + 鼠标右键</code> 选择在此处打开 Powershell 窗口,在命令行中输入 <code>jupyter notebook</code> 就可以成功打开课程的记事本!</p>
+<img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320213115708.png" alt="image-20230320213115708" style="zoom: 67%;" />
+
+<p><img src="C:\Users\11843\AppData\Roaming\Typora\typora-user-images\image-20230320213324026.png" alt="image-20230320213324026"></p>
+]]></content>
+      <categories>
+        <category>动手学深度学习</category>
+      </categories>
+      <tags>
+        <tag>环境配置</tag>
       </tags>
   </entry>
 </search>
