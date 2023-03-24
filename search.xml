@@ -1087,4 +1087,362 @@ RuntimeError: The size of tensor a (4) must match the size of tensor b (5) at no
         <tag>深度学习笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>动手学深度学习-softmax回归</title>
+    <url>/2023/03/24/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-softmax%E5%9B%9E%E5%BD%92/</url>
+    <content><![CDATA[<p>图像分类数据集</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">&#x27;KMP_DUPLICATE_LIB_OK&#x27;</span>]=<span class="string">&#x27;True&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">from</span> torch.utils <span class="keyword">import</span> data</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure>
+
+<p>读取数据集</p>
+<p>ToTensor使数据从pil类型变换成32位浮点数格式,root为读取数据集位置,train表示读取的是否是训练集,transform表示读取的是向量格式,download表示从网络下载</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">trans = transforms.ToTensor()</span><br><span class="line">mnist_train = torchvision.datasets.FashionMNIST(</span><br><span class="line">    root = <span class="string">&quot;../data&quot;</span>,train = <span class="literal">True</span>,transform = trans,download=<span class="literal">True</span>) <span class="comment">#训练集</span></span><br><span class="line">mnist_test = torchvision.datasets.FashionMNIST(</span><br><span class="line">    root = <span class="string">&quot;../data&quot;</span>,train= <span class="literal">False</span>, transform= trans,download=<span class="literal">True</span>) <span class="comment">#测试集</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">len</span>(mnist_train),<span class="built_in">len</span>(mnist_test)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(60000, 10000)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mnist_train[<span class="number">0</span>][<span class="number">0</span>].shape</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>torch.Size([1, 28, 28])
+</code></pre>
+<p>用于在数字标签索引及其文本名称之间进行转换</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_fashion_mnist_labels</span>(<span class="params">labels</span>): <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;返回Fashion-MNIST数据集的文本标签&quot;&quot;&quot;</span></span><br><span class="line">    text_labels = [<span class="string">&#x27;t-shirt&#x27;</span>,<span class="string">&#x27;trouser&#x27;</span>,<span class="string">&#x27;pullover&#x27;</span>,<span class="string">&#x27;dress&#x27;</span>,<span class="string">&#x27;coat&#x27;</span>,</span><br><span class="line">                  <span class="string">&#x27;sandal&#x27;</span>,<span class="string">&#x27;shirt&#x27;</span>,<span class="string">&#x27;sneaker&#x27;</span>,<span class="string">&#x27;bag&#x27;</span>,<span class="string">&#x27;ankle boot&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> [text_labels[<span class="built_in">int</span>(i)] <span class="keyword">for</span> i <span class="keyword">in</span> labels]</span><br></pre></td></tr></table></figure>
+
+<p>创建函数可视化样本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">show_images</span>(<span class="params">imgs,num_rows,num_cols,titles=<span class="literal">None</span>,scale=<span class="number">1.5</span></span>): <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;绘制图像列表&quot;&quot;&quot;</span></span><br><span class="line">    figsize = (num_cols*scale,num_rows*scale)</span><br><span class="line">    _,axes = d2l.plt.subplots(num_rows,num_cols,figsize=figsize)</span><br><span class="line">    axes = axes.flatten()</span><br><span class="line">    <span class="keyword">for</span> i ,(ax,img) <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="built_in">zip</span>(axes,imgs)):</span><br><span class="line">        <span class="keyword">if</span> torch.is_tensor(img):</span><br><span class="line">            ax.imshow(img.numpy())</span><br><span class="line">        <span class="keyword">else</span> :</span><br><span class="line">            ax.imshow(img)</span><br><span class="line">        ax.axes.get_xaxis().set_visible(<span class="literal">False</span>)</span><br><span class="line">        ax.axes.get_yaxis().set_visible(<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">if</span> titles:</span><br><span class="line">            ax.set_title(titles[i])</span><br><span class="line">    <span class="keyword">return</span> axes</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X,y = <span class="built_in">next</span>(<span class="built_in">iter</span>(data.DataLoader(mnist_train,batch_size=<span class="number">18</span>)))</span><br><span class="line">show_images(X.reshape(<span class="number">18</span>,<span class="number">28</span>,<span class="number">28</span>),<span class="number">2</span>,<span class="number">9</span>,titles=get_fashion_mnist_labels(y));</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/2023/03/24/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-softmax%E5%9B%9E%E5%BD%92/output_11_0.png" alt="png"></p>
+<p>读取小批量</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">batch_size = <span class="number">256</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_dataloader_workers</span>():  <span class="comment">#@save</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">4</span></span><br><span class="line"></span><br><span class="line">train_iter = data.DataLoader(mnist_train,batch_size,shuffle=<span class="literal">True</span>,num_workers=get_dataloader_workers())</span><br></pre></td></tr></table></figure>
+
+<p>读取训练数据所需的时间</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">timer = d2l.Timer()</span><br><span class="line"><span class="keyword">for</span> X,y <span class="keyword">in</span> train_iter:</span><br><span class="line">    <span class="keyword">continue</span></span><br><span class="line"><span class="string">f&#x27;<span class="subst">&#123;timer.stop():<span class="number">.2</span>f&#125;</span> sec&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&#39;25.70 sec&#39;
+</code></pre>
+<p>将数据读取整合到一起</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">load_data_fashion_mnist</span>(<span class="params">batch_size,resize=<span class="literal">None</span></span>): <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;下载Fashion-NMIST数据集,然后将其加载到内存中&quot;&quot;&quot;</span></span><br><span class="line">    trans = [transforms.ToTensor()]</span><br><span class="line">    <span class="keyword">if</span> resize:</span><br><span class="line">        trans.insert(<span class="number">0</span>,transforms.Resize(resize))</span><br><span class="line">    trans = transforms.Compose(trans)</span><br><span class="line">    mnist_train = torchvision.datasets.FashionMNIST(</span><br><span class="line">        root=<span class="string">&quot;../data&quot;</span>,train=<span class="literal">True</span>,transform=trans,download=<span class="literal">True</span>)</span><br><span class="line">    mnist_test = torchvision.datasets.FashionMNIST(</span><br><span class="line">        root=<span class="string">&quot;../data&quot;</span>,train=<span class="literal">False</span>,transform=trans,download=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> (data.DataLoader(mnist_train,batch_size,shuffle=<span class="literal">True</span>,</span><br><span class="line">                            num_workers=get_dataloader_workers()),</span><br><span class="line">            data.DataLoader(mnist_test,batch_size,shuffle=<span class="literal">False</span>,</span><br><span class="line">                            num_workers=get_dataloader_workers()))</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train_iter,test_iter = load_data_fashion_mnist(<span class="number">32</span>,resize=<span class="number">64</span>)</span><br><span class="line"><span class="keyword">for</span> X,y <span class="keyword">in</span> train_iter:</span><br><span class="line">    <span class="built_in">print</span>(X.shape,X.dtype,y.shape,y.dtype)</span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>torch.Size([32, 1, 64, 64]) torch.float32 torch.Size([32]) torch.int64
+</code></pre>
+<h1 id="线性回归从零开始实现"><a href="#线性回归从零开始实现" class="headerlink" title="线性回归从零开始实现"></a>线性回归从零开始实现</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure>
+
+<p>生成数据集</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">synthetic_data</span>(<span class="params">w,b,num_examples</span>): <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;生成y和x&quot;&quot;&quot;</span></span><br><span class="line">    X = torch.normal(<span class="number">0</span>,<span class="number">1</span>,(num_examples,<span class="built_in">len</span>(w))) <span class="comment">#X为高斯分布的随机数</span></span><br><span class="line">    y = torch.matmul(X,w)+b <span class="comment">#根据X和预设的w计算y</span></span><br><span class="line">    y += torch.normal(<span class="number">0</span>,<span class="number">0.01</span>,y.shape) <span class="comment">#对y添加一个随机扰动</span></span><br><span class="line">    <span class="keyword">return</span> X,y.reshape((-<span class="number">1</span>,<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">2</span>,-<span class="number">3.4</span>]) <span class="comment">#设置w参数</span></span><br><span class="line">true_b = <span class="number">4.2</span> <span class="comment">#设置b参数</span></span><br><span class="line">features,labels = synthetic_data(true_w,true_b,<span class="number">1000</span>) <span class="comment">#根据参数设置数据集</span></span><br></pre></td></tr></table></figure>
+
+<p>批量读取数据集</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_iter</span>(<span class="params">batch_size,features,labels</span>):</span><br><span class="line">    num_examples = <span class="built_in">len</span>(features)</span><br><span class="line">    indices = <span class="built_in">list</span>(<span class="built_in">range</span>(num_examples)) <span class="comment">#设置一个标号用来随机读取数据集中的数据</span></span><br><span class="line">    random.shuffle(indices)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,num_examples,batch_size):</span><br><span class="line">        batch_indices = torch.tensor(</span><br><span class="line">            indices[i:<span class="built_in">min</span>(i + batch_size,num_examples)]) <span class="comment">#选取一个标号生成向量</span></span><br><span class="line">        <span class="keyword">yield</span> features[batch_indices],labels[batch_indices] <span class="comment">#每次单独取一个features,labels</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">batch_size = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> X,y <span class="keyword">in</span> data_iter(batch_size,features,labels):</span><br><span class="line">    <span class="built_in">print</span>(X,<span class="string">&#x27;\n&#x27;</span>,y)</span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>tensor([[-0.1081, -0.5731],
+        [-0.4934, -0.1212],
+        [-0.1073,  0.8958],
+        [-0.2244,  0.1532],
+        [-0.0630, -0.7970],
+        [-0.8336, -1.2219],
+        [-1.0196,  1.6207],
+        [-0.1009,  0.5200],
+        [-0.4763, -0.1988],
+        [ 0.5296, -0.2843]]) 
+ tensor([[ 5.9328],
+        [ 3.6350],
+        [ 0.9321],
+        [ 3.2144],
+        [ 6.7879],
+        [ 6.6725],
+        [-3.3650],
+        [ 2.2413],
+        [ 3.9385],
+        [ 6.2498]])
+</code></pre>
+<p>初始化模型参数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">w = torch.normal(<span class="number">0</span>,<span class="number">0.01</span>,size=(<span class="number">2</span>,<span class="number">1</span>),requires_grad=<span class="literal">True</span>)</span><br><span class="line">b = torch.zeros(<span class="number">1</span>,requires_grad=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>定义模型</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">linreg</span>(<span class="params">X,w,b</span>): <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;线性回归&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> torch.matmul(X,w) + b</span><br></pre></td></tr></table></figure>
+
+<p>定义损失函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">squared_loss</span>(<span class="params">y_hat,y</span>): <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;均方损失&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> (y_hat - y.reshape(y_hat.shape))**<span class="number">2</span> /<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>定义优化算法</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sgd</span>(<span class="params">params,lr,batch_size</span>): <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;小批量随机梯度下降&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="keyword">for</span> param <span class="keyword">in</span> params:</span><br><span class="line">            param -= lr*param.grad / batch_size</span><br><span class="line">            param.grad.zero_()</span><br></pre></td></tr></table></figure>
+
+<p>训练</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">lr = <span class="number">0.03</span></span><br><span class="line">num_epochs = <span class="number">3</span></span><br><span class="line">net = linreg</span><br><span class="line">loss = squared_loss</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">    <span class="keyword">for</span> X,y <span class="keyword">in</span> data_iter(batch_size,features,labels):</span><br><span class="line">        l = loss(net(X,w,b),y) <span class="comment">#小批量的均方损失</span></span><br><span class="line">        l.<span class="built_in">sum</span>().backward()</span><br><span class="line">        sgd([w,b],lr,batch_size) <span class="comment">#使用梯度更新参数</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        train_l = loss(net(features,w,b),labels)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;epoch<span class="subst">&#123;epoch + <span class="number">1</span>&#125;</span>,loss <span class="subst">&#123;<span class="built_in">float</span>(train_l.mean()):f&#125;</span>&#x27;</span>) <span class="comment">#打印每个epoch的均方损失</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>epoch1,loss 0.000158
+epoch2,loss 0.000051
+epoch3,loss 0.000051
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;w的估计误差:<span class="subst">&#123;true_w - w.reshape(true_w.shape)&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;b的估计误差:<span class="subst">&#123;true_b - b&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>w的估计误差:tensor([-1.5759e-04, -9.2030e-05], grad_fn=&lt;SubBackward0&gt;)
+b的估计误差:tensor([-0.0002], grad_fn=&lt;RsubBackward1&gt;)
+</code></pre>
+<h1 id="softmax回归的简洁实现-使用pytorch"><a href="#softmax回归的简洁实现-使用pytorch" class="headerlink" title="softmax回归的简洁实现(使用pytorch)"></a>softmax回归的简洁实现(使用pytorch)</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure>
+
+<p>导入数据集</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">batch_size = <span class="number">256</span></span><br><span class="line">train_iter,test_iter = d2l.load_data_fashion_mnist(batch_size) </span><br><span class="line"><span class="comment">#从d2l包中直接导入数据集</span></span><br></pre></td></tr></table></figure>
+
+<p>初始化模型参数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">net = nn.Sequential(nn.Flatten(),nn.Linear(<span class="number">784</span>,<span class="number">10</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">init_weights</span>(<span class="params">m</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">type</span>(m) == nn.Linear:</span><br><span class="line">        nn.init.normal_(m.weight,std=<span class="number">0.01</span>) <span class="comment">#m用正态分布随机化一个数</span></span><br><span class="line">        </span><br><span class="line">net.apply(init_weights);</span><br></pre></td></tr></table></figure>
+
+<p>定义损失函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">loss = nn.CrossEntropyLoss(reduction=<span class="string">&#x27;none&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>调用优化算法</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">trainer = torch.optim.SGD(net.parameters(),lr=<span class="number">0.1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>训练</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">num_epochs = <span class="number">10</span></span><br><span class="line">d2l.train_ch3(net,train_iter,test_iter,loss,num_epochs,trainer)</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/2023/03/24/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-softmax%E5%9B%9E%E5%BD%92/output_50_0.svg" alt="svg"></p>
+]]></content>
+      <categories>
+        <category>动手学深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>动手学深度学习-线性回归</title>
+    <url>/2023/03/24/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/</url>
+    <content><![CDATA[<h1 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h1><p>y^ &#x3D; Xw + b</p>
+<p>损失函数</p>
+<p>$$l^{(i)}(\mathbf{w}, b) &#x3D; \frac{1}{2} \left(\hat{y}^{(i)} - y^{(i)}\right)^2.$$</p>
+<p>n个样本的平均损失函数</p>
+<p>$$L(\mathbf{w}, b) &#x3D;\frac{1}{n}\sum_{i&#x3D;1}^n l^{(i)}(\mathbf{w}, b) &#x3D;\frac{1}{n} \sum_{i&#x3D;1}^n \frac{1}{2}\left(\mathbf{w}^\top \mathbf{x}^{(i)} + b - y^{(i)}\right)^2.$$</p>
+<p>目的是找到一组参数,使训练样本上的总损失最小:</p>
+<p>$$\mathbf{w}^*, b^* &#x3D; \operatorname*{argmin}_{\mathbf{w}, b}\  L(\mathbf{w}, b).$$</p>
+<p>矢量化加速</p>
+<p>对于矢量的计算不再用for单独遍历,而是直接调用线性代数库进行矢量计算能够更快</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">&#x27;KMP_DUPLICATE_LIB_OK&#x27;</span>]=<span class="string">&#x27;True&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n = <span class="number">10000</span></span><br><span class="line">a = torch.ones([n])</span><br><span class="line">b = torch.ones([n])</span><br></pre></td></tr></table></figure>
+
+<p>定义计数器来测量运行时间</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Timer</span>:  <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;记录多次运行时间&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.times = []</span><br><span class="line">        self.start()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">start</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;启动计时器&quot;&quot;&quot;</span></span><br><span class="line">        self.tik = time.time()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">stop</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;停止计时器并将时间记录在列表中&quot;&quot;&quot;</span></span><br><span class="line">        self.times.append(time.time() - self.tik)</span><br><span class="line">        <span class="keyword">return</span> self.times[-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">avg</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;返回平均时间&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">sum</span>(self.times) / <span class="built_in">len</span>(self.times)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sum</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;返回时间总和&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">sum</span>(self.times)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">cumsum</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;返回累计时间&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> np.array(self.times).cumsum().tolist()</span><br></pre></td></tr></table></figure>
+
+<p>使用for循环执行加法</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c = torch.zeros(n)</span><br><span class="line">timer = Timer()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">    c[i] = a[i] + b[i]</span><br><span class="line"><span class="string">f&#x27;<span class="subst">&#123;timer.stop():<span class="number">.5</span>f&#125;</span> sec&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<pre><code>&#39;0.13959 sec&#39;
+</code></pre>
+<p>使用重载的+来求和</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">timer.start()</span><br><span class="line">d = a + b</span><br><span class="line"><span class="string">f&#x27;<span class="subst">&#123;timer.stop():<span class="number">.5</span>f&#125;</span> sec&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<pre><code>&#39;0.00127 sec&#39;
+</code></pre>
+<p>正态分布</p>
+<p>计算正态分布</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">normal</span>(<span class="params">x,mu,sigma</span>):</span><br><span class="line">    p = <span class="number">1</span> / math.sqrt(<span class="number">2</span>*math.pi*sigma**<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> p *np.exp(-<span class="number">0.5</span>/sigma**<span class="number">2</span>*(x-mu)**<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>可视化正态分布</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = np.arange(-<span class="number">7</span>,<span class="number">7</span>,<span class="number">0.01</span>)</span><br><span class="line">x</span><br><span class="line">params = [(<span class="number">0</span>,<span class="number">1</span>),(<span class="number">0</span>,<span class="number">2</span>),(<span class="number">3</span>,<span class="number">1</span>)]</span><br><span class="line">d2l.plot(x,[normal(x,mu,sigma) <span class="keyword">for</span> mu, sigma <span class="keyword">in</span> params], xlabel=<span class="string">&#x27;x&#x27;</span>,</span><br><span class="line">         ylabel=<span class="string">&#x27;p(x)&#x27;</span>, figsize=(<span class="number">4.5</span>, <span class="number">2.5</span>),</span><br><span class="line">        legend=[<span class="string">f&#x27;mean <span class="subst">&#123;mu&#125;</span>, std <span class="subst">&#123;sigma&#125;</span>&#x27;</span> <span class="keyword">for</span> mu, sigma <span class="keyword">in</span> params])</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/2023/03/24/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/output_16_0.svg" alt="svg"></p>
+<p>线性回归从零开始实现</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure>
+
+<p>生成数据集</p>
+<p>使用带噪声的线性模型构造人造数据集.生成一个包含1000个样本的数据集,每个样本包含从正态分布采样的两个特征.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">synthetic_data</span>(<span class="params">w,b,num_examples</span>): <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;生成y=xw+b+噪声&quot;&quot;&quot;</span></span><br><span class="line">    X = torch.normal(<span class="number">0</span>,<span class="number">1</span>,(num_examples,<span class="built_in">len</span>(w)))</span><br><span class="line">    y = torch.matmul(X,w) + b</span><br><span class="line">    y += torch.normal(<span class="number">0</span>,<span class="number">0.01</span>,y.shape)</span><br><span class="line">    <span class="keyword">return</span> X,y.reshape((-<span class="number">1</span>,<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<p>x通过随机生成,w,b人为设定,将设定的w,b输入到生成数据集的函数synthetic_data()中,随机生成x和对应的y.也就是假定了线性函数,并通过这个线性函数和噪声生成数据集</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">2</span>,-<span class="number">3.4</span>])</span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line">features,labels = synthetic_data(true_w,true_b,<span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;features:&#x27;</span>,features[<span class="number">0</span>],<span class="string">&#x27;\nlabel:&#x27;</span>,labels[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+<pre><code>features: tensor([-0.2833, -1.9873]) 
+label: tensor([10.3827])
+</code></pre>
+<p>观察features[0]和labels的散点图,可以看到两者之间有线性关系</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">d2l.set_figsize()</span><br><span class="line">d2l.plt.scatter(features[:,<span class="number">0</span>].detach().numpy(),labels.detach().numpy(),<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/2023/03/24/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/output_25_0.svg" alt="svg"></p>
+<p>读取数据集</p>
+<p>data_iter 函数可以随机抽取生成数据集中的部分数据</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_iter</span>(<span class="params">batch_size,features,labels</span>):</span><br><span class="line">    num_examples = <span class="built_in">len</span>(features)</span><br><span class="line">    indices = <span class="built_in">list</span>(<span class="built_in">range</span>(num_examples))</span><br><span class="line">    random.shuffle(indices)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,num_examples,batch_size):</span><br><span class="line">        batch_indices = torch.tensor(</span><br><span class="line">        indices[i:<span class="built_in">min</span>(i + batch_size,num_examples)])</span><br><span class="line">        <span class="keyword">yield</span> features[batch_indices],labels[batch_indices]</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">batch_size = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> X,y <span class="keyword">in</span> data_iter(batch_size,features,labels):</span><br><span class="line">    <span class="built_in">print</span>(X,<span class="string">&#x27;\n&#x27;</span>,y)</span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>tensor([[-0.6035,  0.9162],
+        [ 1.7614,  1.0970],
+        [-0.3809, -2.1023],
+        [-1.7844, -0.4626],
+        [ 1.1887, -1.6525],
+        [-0.8178,  1.2127],
+        [-0.2247,  0.8144],
+        [ 0.4035,  1.8231],
+        [ 0.3496, -0.2373],
+        [ 0.4382, -0.9849]]) 
+ tensor([[-0.1049],
+        [ 3.9912],
+        [10.5857],
+        [ 2.1945],
+        [12.1976],
+        [-1.5510],
+        [ 0.9946],
+        [-1.2080],
+        [ 5.7239],
+        [ 8.4225]])
+</code></pre>
+<p>初始化模型参数w,b.初始化为正态分布的随机值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">w = torch.normal(<span class="number">0</span>,<span class="number">0.01</span>,size=(<span class="number">2</span>,<span class="number">1</span>),requires_grad=<span class="literal">True</span>)</span><br><span class="line">b = torch.zeros(<span class="number">1</span>,requires_grad=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>定义模型</p>
+<p>模型就是y&#x3D;xw+b</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">linreg</span>(<span class="params">X,w,b</span>): <span class="comment">#@save</span></span><br><span class="line">    <span class="keyword">return</span> torch.matmul(X,w) + b</span><br></pre></td></tr></table></figure>
+
+<p>定义损失函数<strong>squared_loss()</strong></p>
+<p>损失函数&#x3D; $\frac{1}{2} (\hat{y}-y)^2$</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">squared_loss</span>(<span class="params">y_hat,y</span>): <span class="comment">#@save</span></span><br><span class="line">    <span class="keyword">return</span> (y_hat - y.reshape(y_hat.shape))**<span class="number">2</span>/<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>定义优化算法</p>
+<p>小批量梯度下降算法<strong>sgd()</strong>,参数每次-学习率*梯度&#x2F;样本量</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sgd</span>(<span class="params">params,lr,batch_size</span>):  <span class="comment">#@save</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="keyword">for</span> param <span class="keyword">in</span> params:</span><br><span class="line">            param -= lr * param.grad / batch_size</span><br><span class="line">            param.grad.zero_()</span><br></pre></td></tr></table></figure>
+
+<p>指定训练参数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">lr = <span class="number">0.01</span></span><br><span class="line">num_epochs = <span class="number">15</span></span><br><span class="line">net = linreg</span><br><span class="line">loss = squared_loss</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">    <span class="keyword">for</span> X,y <span class="keyword">in</span> data_iter(batch_size,features,labels):</span><br><span class="line">        l = loss(net(X,w,b),y)  <span class="comment">#计算损失函数</span></span><br><span class="line">        l.<span class="built_in">sum</span>().backward()  <span class="comment">#求梯度</span></span><br><span class="line">        sgd([w,b],lr,batch_size) <span class="comment">#更新梯度</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad(): <span class="comment">#在梯度为0条件下,计算三次epoch的损失,对训练进行评价</span></span><br><span class="line">        train_1 = loss(net(features,w,b),labels)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;epoch<span class="subst">&#123;epoch + <span class="number">1</span>&#125;</span>,loss <span class="subst">&#123;<span class="built_in">float</span>(train_1.mean()):f&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>epoch1,loss 2.184030
+epoch2,loss 0.284604
+epoch3,loss 0.037409
+epoch4,loss 0.004994
+epoch5,loss 0.000712
+epoch6,loss 0.000142
+epoch7,loss 0.000067
+epoch8,loss 0.000056
+epoch9,loss 0.000055
+epoch10,loss 0.000055
+epoch11,loss 0.000055
+epoch12,loss 0.000055
+epoch13,loss 0.000055
+epoch14,loss 0.000055
+epoch15,loss 0.000055
+</code></pre>
+<p>比较训练数据和真实数据的值,评价训练效果</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;w的估计误差:<span class="subst">&#123;true_w - w.reshape(true_w.shape)&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;b的误差:<span class="subst">&#123;true_b-b&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>w的估计误差:tensor([-0.0004, -0.0001], grad_fn=&lt;SubBackward0&gt;)
+b的误差:tensor([-0.0004], grad_fn=&lt;RsubBackward1&gt;)
+</code></pre>
+<p>线性回归的简洁实现</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch.utils <span class="keyword">import</span> data</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure>
+
+<p>生成数据集</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">2</span>, -<span class="number">3.4</span>])</span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line">features, labels = d2l.synthetic_data(true_w, true_b, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>读取数据集</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">load_array</span>(<span class="params">data_arrays,batch_size,is_train=<span class="literal">True</span></span>): <span class="comment">#@save</span></span><br><span class="line">    dataset = data.TensorDataset(*data_arrays)</span><br><span class="line">    <span class="keyword">return</span> data.DataLoader(dataset,batch_size,shuffle=is_train)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">batch_size = <span class="number">10</span></span><br><span class="line">data_iter = load_array((features,labels),batch_size)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">next</span>(<span class="built_in">iter</span>(data_iter))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[tensor([[-2.0785, -1.1821],
+         [-0.2558,  1.3086],
+         [-0.6385,  0.1244],
+         [-2.0940,  0.6876],
+         [-0.2174,  1.4855],
+         [ 0.3694, -0.7484],
+         [ 0.6117, -0.2025],
+         [-0.5963,  0.7489],
+         [ 1.3280,  1.1161],
+         [-0.9048,  0.0519]]),
+ tensor([[ 4.0596],
+         [-0.7617],
+         [ 2.4987],
+         [-2.3301],
+         [-1.2802],
+         [ 7.4839],
+         [ 6.1274],
+         [ 0.4620],
+         [ 3.0419],
+         [ 2.2106]])]
+</code></pre>
+<p>定义模型</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line">net = nn.Sequential(nn.Linear(<span class="number">2</span>,<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<p>初始化参数w,b为随机数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">net[<span class="number">0</span>].weight.data.normal_(<span class="number">0</span>,<span class="number">0.01</span>)</span><br><span class="line">net[<span class="number">0</span>].bias.data.fill_(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor([0.])
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">loss = nn.MSELoss() <span class="comment">#调用pytorch中直接有的均方误差</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">trainer = torch.optim.SGD(net.parameters(),lr = <span class="number">0.03</span>)<span class="comment">#直接调用pytorch中的sgd算法</span></span><br></pre></td></tr></table></figure>
+
+<p>训练</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">num_epochs = <span class="number">3</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">    <span class="keyword">for</span> X,y <span class="keyword">in</span> data_iter:</span><br><span class="line">        l = loss(net(X),y) <span class="comment">#求损失函数</span></span><br><span class="line">        trainer.zero_grad() <span class="comment">#梯度清零</span></span><br><span class="line">        l.backward()  <span class="comment">#求梯度</span></span><br><span class="line">        trainer.step() <span class="comment">#更新模型</span></span><br><span class="line">    l = loss(net(features),labels)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;epoch <span class="subst">&#123;epoch + <span class="number">1</span>&#125;</span>,loss:<span class="subst">&#123;l:f&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>epoch 1,loss:0.000285
+epoch 2,loss:0.000097
+epoch 3,loss:0.000098
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">w = net[<span class="number">0</span>].weight.data</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;w的估计误差：&#x27;</span>, true_w - w.reshape(true_w.shape))</span><br><span class="line">b = net[<span class="number">0</span>].bias.data</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;b的估计误差：&#x27;</span>, true_b - b)</span><br></pre></td></tr></table></figure>
+
+<pre><code>w的估计误差： tensor([0.0005, 0.0004])
+b的估计误差： tensor([0.0006])
+</code></pre>
+]]></content>
+      <categories>
+        <category>动手学深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习笔记</tag>
+      </tags>
+  </entry>
 </search>
