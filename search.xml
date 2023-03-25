@@ -32,12 +32,12 @@
     <title>hexo 设置</title>
     <url>/2023/03/20/hexo-%E8%AE%BE%E7%BD%AE/</url>
     <content><![CDATA[<span id="more"></span>
-
-<h3 id="hexo-常用命令"><a href="#hexo-常用命令" class="headerlink" title="hexo 常用命令"></a>hexo 常用命令</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new &quot;name&quot; 	 #新建文章</span><br><span class="line">hexo new page &quot;name&quot; #新建页面</span><br><span class="line">hexo g 				 #生成页面</span><br><span class="line">hexo d				 #部署</span><br><span class="line">hexo s				 #本地预览</span><br><span class="line">hexo clean 			 #清除缓存和已生成的静态文件</span><br><span class="line">hexo help			 #帮助</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="hexo-美化"><a href="#hexo-美化" class="headerlink" title="hexo 美化"></a>hexo 美化</h3><p>….未完待续</p>
+<h3 id="hexo-常用命令">hexo 常用命令</h3>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new &quot;name&quot; 	 #新建文章</span><br><span class="line">hexo new page &quot;name&quot; #新建页面</span><br><span class="line">hexo g 				 #生成页面</span><br><span class="line">hexo d				 #部署</span><br><span class="line">hexo s				 #本地预览</span><br><span class="line">hexo clean 			 #清除缓存和已生成的静态文件</span><br><span class="line">hexo help			 #帮助</span><br></pre></td></tr></table></figure>
+<h3 id="hexo-美化">hexo 美化</h3>
+<p>....未完待续</p>
+<h3 id="hexo-设置观察">hexo 设置观察</h3>
+<p><span class="math inline">\(ax = b + c\)</span></p>
 ]]></content>
       <tags>
         <tag>工具</tag>
@@ -1530,59 +1530,80 @@ b的估计误差： tensor([0.0006])
   <entry>
     <title>动手学深度学习-模型选择,过拟合,欠拟合</title>
     <url>/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/</url>
-    <content><![CDATA[<h1 id="模型选择-欠拟合-过拟合"><a href="#模型选择-欠拟合-过拟合" class="headerlink" title="模型选择,欠拟合,过拟合"></a>模型选择,欠拟合,过拟合</h1><p>欠拟合: 简单的模型用复杂的数据进行训练时容易欠拟合</p>
-<p>过拟合: 复杂的模型用简单的数据进行训练时容易过拟合,模型对训练数据的拟合比潜在的分布更接近</p>
+    <content><![CDATA[<h1 id="模型选择欠拟合过拟合">模型选择,欠拟合,过拟合</h1>
+<p>欠拟合: 简单的模型用复杂的数据进行训练时容易欠拟合</p>
+<p>过拟合:
+复杂的模型用简单的数据进行训练时容易过拟合,模型对训练数据的拟合比潜在的分布更接近</p>
 <p>所以: 模型容量需要匹配数据的复杂度</p>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/1.png" alt="1.png"></p>
-<h3 id="模型容量"><a href="#模型容量" class="headerlink" title="模型容量"></a>模型容量</h3><p>模型容量: 模型拟合各种函数的能力,低容量难以拟合数据,高容量容易记住所有训练数据</p>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/2.png" alt="2.png"></p>
-<h3 id="模型容量选择"><a href="#模型容量选择" class="headerlink" title="模型容量选择"></a>模型容量选择</h3><p>模型容量低时对训练数据拟合的不好,训练误差大</p>
+<figure>
+<img src="1.png" alt="1.png" />
+<figcaption aria-hidden="true">1.png</figcaption>
+</figure>
+<h3 id="模型容量">模型容量</h3>
+<p>模型容量:
+模型拟合各种函数的能力,低容量难以拟合数据,高容量容易记住所有训练数据</p>
+<figure>
+<img src="2.png" alt="2.png" />
+<figcaption aria-hidden="true">2.png</figcaption>
+</figure>
+<h3 id="模型容量选择">模型容量选择</h3>
+<p>模型容量低时对训练数据拟合的不好,训练误差大</p>
 <p>模型容量高时对训练数据拟合更好,但模型容量太高容易导致过拟合,泛化误差反而增加</p>
 <p>泛化误差最小时训练的模型对新数据的拟合最好,模型最优</p>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/3.png" alt="3.png"></p>
-<h3 id="估计模型容量"><a href="#估计模型容量" class="headerlink" title="估计模型容量"></a>估计模型容量</h3><ol>
+<figure>
+<img src="3.png" alt="3.png" />
+<figcaption aria-hidden="true">3.png</figcaption>
+</figure>
+<h3 id="估计模型容量">估计模型容量</h3>
+<ol type="1">
 <li>参数的个数</li>
 <li>参数值的选择范围</li>
 </ol>
-<p><strong>VC维</strong>  :</p>
+<p><strong>VC维</strong> :</p>
 <p>模型能够记住的最大的数据集的大小,可以用来衡量模型好坏,但深度学习中很少使用,因为不准确且很难计算</p>
-<p>例子: 二维感知机能够区分3个点的任意放置,4个点时就有不能记住的类型了(xor),所以二维感知机的vc维&#x3D;3</p>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/4.png" alt="4.png"></p>
+<p>例子:
+二维感知机能够区分3个点的任意放置,4个点时就有不能记住的类型了(xor),所以二维感知机的vc维=3</p>
+<figure>
+<img src="4.png" alt="4.png" />
+<figcaption aria-hidden="true">4.png</figcaption>
+</figure>
 <p><strong>数据复杂度:</strong></p>
-<ol>
+<ol type="1">
 <li>样本个数</li>
 <li>每个样本的元素个数</li>
 <li>时间,空间结构</li>
 <li>多样性</li>
 </ol>
 <p>训练误差(training error): 模型在训练数据集上计算得到的误差</p>
-<p>泛化误差(generalization error): 模型应用在新数据集上计算得到的误差</p>
+<p>泛化误差(generalization error):
+模型应用在新数据集上计算得到的误差</p>
 <p>训练数据集: 训练模型参数</p>
 <p>验证数据集: 用来训练时评估模型好坏的数据集,用来选择模型的超参数</p>
 <p>测试数据集: 只用一次的数据集,用来应用模型</p>
 <p>K折交叉验证</p>
 <p>将原始数据集分成K个不交叉的子集,然后执行K次模型训练和验证,每次在K-1个子集上训练,在最后一个子集上验证,最后对K次实验的结果取平均来估计训练和验证误差</p>
 <p>K折交叉验证常用于样本数据很小时,避免验证的数据集占比过大,K的数量越大模型训练效果越好,但K越大训练的次数越多,要考虑到成本因素进行控制</p>
-<h1 id="过拟合和欠拟合的样例"><a href="#过拟合和欠拟合的样例" class="headerlink" title="过拟合和欠拟合的样例"></a>过拟合和欠拟合的样例</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">&#x27;KMP_DUPLICATE_LIB_OK&#x27;</span>]=<span class="string">&#x27;True&#x27;</span></span><br></pre></td></tr></table></figure>
-
-
+<h1 id="过拟合和欠拟合的样例">过拟合和欠拟合的样例</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">&#x27;KMP_DUPLICATE_LIB_OK&#x27;</span>]=<span class="string">&#x27;True&#x27;</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure>
-
 <p>生成数据集</p>
-<p><strong>$$y &#x3D; 5 + 1.2x - 3.4\frac{x^2}{2!} + 5.6 \frac{x^3}{3!} + \epsilon \text{ where }<br>\epsilon \sim \mathcal{N}(0, 0.1^2).$$</strong></p>
+<p><strong><span class="math display">\[y = 5 + 1.2x - 3.4\frac{x^2}{2!}
++ 5.6 \frac{x^3}{3!} + \epsilon \text{ where }\epsilon \sim
+\mathcal{N}(0, 0.1^2).\]</span></strong></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">max_degree = <span class="number">20</span> </span><br><span class="line">n_train,n_test = <span class="number">100</span>,<span class="number">100</span> <span class="comment">#训练集,验证集的大小</span></span><br><span class="line">true_w = np.zeros(max_degree) <span class="comment">#创造一个20维的向量w,4维之后的都是扰动</span></span><br><span class="line">true_w[<span class="number">0</span>:<span class="number">4</span>] = np.array([<span class="number">5</span>,<span class="number">1.2</span>,-<span class="number">3.4</span>,<span class="number">5.6</span>]) <span class="comment">#前4维是正确的参数</span></span><br><span class="line">features = np.random.normal(size=(n_train + n_test,<span class="number">1</span>)) <span class="comment">#生成一个200行1列的随机数据作为x</span></span><br><span class="line">np.random.shuffle(features) <span class="comment">#将features打乱</span></span><br><span class="line">poly_features = np.power(features,np.arange(max_degree).reshape(<span class="number">1</span>,-<span class="number">1</span>)) <span class="comment">#将featruers中的每个x做[0次方,1次方,2次方...],此时x作为多项式回归模型的输入，使模型能够捕捉特征与目标变量之间的非线性关系。</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_degree):</span><br><span class="line">    poly_features[:,i] /= math.gamma(i+<span class="number">1</span>) <span class="comment">#对生成的features进行归一化</span></span><br><span class="line">labels = np.dot(poly_features,true_w) <span class="comment">#x和w点积</span></span><br><span class="line">labels += np.random.normal(scale=<span class="number">0.1</span>,size = labels.shape) <span class="comment">#x和w点积+扰动=y</span></span><br></pre></td></tr></table></figure>
-
-<p>true_w、features、poly_features 和 labels 都是 numpy 数组，分别表示真实权重、样本特征、多项式特征矩阵和目标变量。通过将它们转换为 PyTorch 的 tensor 类型，我们可以在 PyTorch 中进行深度学习模型的训练和优化，同时还可以利用 GPU 等硬件加速功能来提高计算性能。</p>
+<p>true_w、features、poly_features 和 labels 都是 numpy
+数组，分别表示真实权重、样本特征、多项式特征矩阵和目标变量。通过将它们转换为
+PyTorch 的 tensor 类型，我们可以在 PyTorch
+中进行深度学习模型的训练和优化，同时还可以利用 GPU
+等硬件加速功能来提高计算性能。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w,features,poly_features,labels = [torch.tensor(x,dtype=torch.float32) </span><br><span class="line">                            <span class="keyword">for</span> x <span class="keyword">in</span> [true_w,features,poly_features,labels]]</span><br></pre></td></tr></table></figure>
-
-<p>features[:2] 表示选取 features 数组的前两行，即前两个样本的特征向量。</p>
-<p>poly_features[:2,:] 表示选取 poly_features 数组的前两行和所有列，即前两个样本的多项式特征矩阵。</p>
-<p>labels[:2] 表示选取 labels 数组的前两个元素，即前两个样本的目标变量。</p>
+<p>features[:2] 表示选取 features
+数组的前两行，即前两个样本的特征向量。</p>
+<p>poly_features[:2,:] 表示选取 poly_features
+数组的前两行和所有列，即前两个样本的多项式特征矩阵。</p>
+<p>labels[:2] 表示选取 labels
+数组的前两个元素，即前两个样本的目标变量。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">features[:<span class="number">2</span>],poly_features[:<span class="number">2</span>,:],labels[:<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
-
-
-
-
 <pre><code>(tensor([[ 0.4346],
          [-0.0716]]),
  tensor([[ 1.0000e+00,  4.3461e-01,  9.4444e-02,  1.3682e-02,  1.4866e-03,
@@ -1593,38 +1614,39 @@ b的估计误差： tensor([0.0006])
           -1.5655e-08,  1.8676e-10, -1.9096e-12,  1.7086e-14, -1.3588e-16,
            9.7258e-19, -6.3285e-21,  3.7748e-23, -2.0783e-25,  1.0626e-27,
           -5.0703e-30,  2.2682e-32, -9.5499e-35,  3.7975e-37, -1.4306e-39]]),
- tensor([5.2514, 4.9395]))
-</code></pre>
+ tensor([5.2514, 4.9395]))</code></pre>
 <p>对模型进行训练和测试</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate_loss</span>(<span class="params">net,data_iter,loss</span>): <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;评估损失&quot;&quot;&quot;</span></span><br><span class="line">    metric = d2l.Accumulator(<span class="number">2</span>) <span class="comment">#累加器对象,有2维,一个表示累加总和,一个表示累加的数的个数</span></span><br><span class="line">    <span class="keyword">for</span> X,y <span class="keyword">in</span> data_iter:</span><br><span class="line">        out = net(X) <span class="comment">#根据x计算y</span></span><br><span class="line">        y = y.reshape(out.shape) <span class="comment">#y改变成和out一样的形状</span></span><br><span class="line">        l = loss(out,y) <span class="comment">#算损失</span></span><br><span class="line">        metric.add(l.<span class="built_in">sum</span>(),l.numel()) <span class="comment">#将l的信息输入累加器</span></span><br><span class="line">    <span class="keyword">return</span> metric[<span class="number">0</span>] / metric[<span class="number">1</span>] <span class="comment">#返回平均损失</span></span><br></pre></td></tr></table></figure>
-
 <p>训练函数</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">train_features,test_features,train_labels,test_labels,num_epochs=<span class="number">400</span></span>):</span><br><span class="line">    loss = nn.MSELoss(reduction=<span class="string">&#x27;none&#x27;</span>) <span class="comment">#不损失降维操作的均方误差(即返回所有损失值,不进行求和等运算)</span></span><br><span class="line">    input_shape = train_features.shape[-<span class="number">1</span>] <span class="comment">#最后一个维度的大小,即每个样本的特征数</span></span><br><span class="line">    net = nn.Sequential(nn.Linear(input_shape,<span class="number">1</span>,bias=<span class="literal">False</span>))</span><br><span class="line">    batch_size = <span class="built_in">min</span>(<span class="number">10</span>,train_labels.shape[<span class="number">0</span>]) <span class="comment">#barch_size 在不超过训练集大小的情况下,一次取10个</span></span><br><span class="line">    train_iter = d2l.load_array((train_features,train_labels.reshape(-<span class="number">1</span>,<span class="number">1</span>)),batch_size) <span class="comment">#迭代器输入训练的x,y,每次输出batch_size个数</span></span><br><span class="line">    test_iter = d2l.load_array((test_features,test_labels.reshape(-<span class="number">1</span>,<span class="number">1</span>)),batch_size,is_train=<span class="literal">False</span>)</span><br><span class="line">    trainer = torch.optim.SGD(net.parameters(),lr=<span class="number">0.01</span>) <span class="comment">#定义了一个使用随机梯度下降（SGD）算法进行模型参数优化的优化器</span></span><br><span class="line">    animator = d2l.Animator(xlabel=<span class="string">&#x27;epoch&#x27;</span>,ylabel=<span class="string">&#x27;loss&#x27;</span>,yscale=<span class="string">&#x27;log&#x27;</span>,xlim=[<span class="number">1</span>,num_epochs],ylim=[<span class="number">1e-3</span>,<span class="number">1e2</span>],legend=[<span class="string">&#x27;train&#x27;</span>,<span class="string">&#x27;test&#x27;</span>]) <span class="comment">#绘制训练损失和测试损失随着训练迭代次数的变化趋势</span></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">        d2l.train_epoch_ch3(net,train_iter,loss,trainer)</span><br><span class="line">        <span class="keyword">if</span> epoch == <span class="number">0</span> <span class="keyword">or</span> (epoch + <span class="number">1</span>) % <span class="number">20</span> == <span class="number">0</span>:</span><br><span class="line">            animator.add(epoch +<span class="number">1</span>,(evaluate_loss(net,train_iter,loss),evaluate_loss(net,test_iter,loss)))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;weight:&#x27;</span>,net[<span class="number">0</span>].weight.data.numpy())</span><br></pre></td></tr></table></figure>
-
 <p><strong>三阶多项式函数拟合</strong></p>
-<p>四个输入分别是: 前n_train(100)行4列作为训练集,n_train(100)行后面所有行4列作为测试集,labels前n_train行作为train_labels(y^),labels的n_train后面所有行作为test_labels(y^)</p>
+<p>四个输入分别是:
+前n_train(100)行4列作为训练集,n_train(100)行后面所有行4列作为测试集,labels前n_train行作为train_labels(y<sup>),labels的n_train后面所有行作为test_labels(y</sup>)</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train(poly_features[:n_train,:<span class="number">4</span>],poly_features[n_train:,:<span class="number">4</span>],labels[:n_train],labels[n_train:])</span><br></pre></td></tr></table></figure>
-
-<pre><code>weight: [[ 4.99034    1.1656325 -3.4056838  5.650331 ]]
-</code></pre>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/output_28_1.svg" alt="svg"></p>
+<pre><code>weight: [[ 4.99034    1.1656325 -3.4056838  5.650331 ]]</code></pre>
+<figure>
+<img src="output_28_1.svg" alt="svg" />
+<figcaption aria-hidden="true">svg</figcaption>
+</figure>
 <p>可以看出,w给前4维时拟合的很好</p>
 <p><strong>线性函数拟合(欠拟合)</strong></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train(poly_features[:n_train, :<span class="number">2</span>], poly_features[n_train:, :<span class="number">2</span>],labels[:n_train], labels[n_train:])</span><br></pre></td></tr></table></figure>
-
-<pre><code>weight: [[3.4050567 3.404248 ]]
-</code></pre>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/output_31_1.svg" alt="svg"></p>
+<pre><code>weight: [[3.4050567 3.404248 ]]</code></pre>
+<figure>
+<img src="output_31_1.svg" alt="svg" />
+<figcaption aria-hidden="true">svg</figcaption>
+</figure>
 <p>w只给前2个维度时给的数据不足,欠拟合</p>
 <p><strong>高阶多项式函数拟合(过拟合)</strong></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train(poly_features[:n_train, :], poly_features[n_train:, :],</span><br><span class="line">      labels[:n_train], labels[n_train:], num_epochs=<span class="number">1500</span>)</span><br></pre></td></tr></table></figure>
-
 <pre><code>weight: [[ 4.964952    1.2093626  -3.2487652   5.3281727  -0.5115174   1.2561612
   -0.06610011  0.18418686  0.11113311  0.01419835  0.15148187  0.10667927
    0.18928145 -0.13205634  0.18986128  0.16003044 -0.0809902  -0.20620278
-  -0.03729296 -0.01795298]]
-</code></pre>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/output_34_1.svg" alt="svg"></p>
+  -0.03729296 -0.01795298]]</code></pre>
+<figure>
+<img src="output_34_1.svg" alt="svg" />
+<figcaption aria-hidden="true">svg</figcaption>
+</figure>
 <p>w给了20维度,因为4维之后的参数都是扰动,所以模型过大会导致过拟合</p>
 ]]></content>
       <categories>
