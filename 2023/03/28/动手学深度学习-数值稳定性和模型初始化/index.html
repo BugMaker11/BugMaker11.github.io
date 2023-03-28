@@ -79,26 +79,21 @@
 
 
 
-<meta name="description" content="本文为DataWhale 3月动手学深度学习模型选择,欠拟合,过拟合笔记">
+<meta name="description" content="本文为DataWhale 3月动手学深度学习数值稳定性和模型初始化笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="动手学深度学习-模型选择,过拟合,欠拟合">
-<meta property="og:url" content="http://bugmaker11.github.io/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/index.html">
+<meta property="og:title" content="动手学深度学习-数值稳定性和模型初始化">
+<meta property="og:url" content="http://bugmaker11.github.io/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/index.html">
 <meta property="og:site_name" content="miandui">
-<meta property="og:description" content="本文为DataWhale 3月动手学深度学习模型选择,欠拟合,过拟合笔记">
+<meta property="og:description" content="本文为DataWhale 3月动手学深度学习数值稳定性和模型初始化笔记">
 <meta property="og:locale">
-<meta property="og:image" content="http://bugmaker11.github.io/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/1.png">
-<meta property="og:image" content="http://bugmaker11.github.io/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/2.png">
-<meta property="og:image" content="http://bugmaker11.github.io/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/3.png">
-<meta property="og:image" content="http://bugmaker11.github.io/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/4.png">
-<meta property="og:image" content="http://bugmaker11.github.io/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/output_28_1.svg">
-<meta property="og:image" content="http://bugmaker11.github.io/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/output_31_1.svg">
-<meta property="og:image" content="http://bugmaker11.github.io/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/output_34_1.svg">
-<meta property="article:published_time" content="2023-03-25T14:25:14.000Z">
-<meta property="article:modified_time" content="2023-03-25T14:59:24.073Z">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/output_8_0.svg">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%E6%9B%B2%E7%BA%BF.png">
+<meta property="article:published_time" content="2023-03-28T03:51:05.000Z">
+<meta property="article:modified_time" content="2023-03-28T04:03:39.382Z">
 <meta property="article:author" content="miandui">
 <meta property="article:tag" content="深度学习笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://bugmaker11.github.io/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/1.png">
+<meta name="twitter:image" content="http://bugmaker11.github.io/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/output_8_0.svg">
 
 
 
@@ -128,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://bugmaker11.github.io/2023/03/25/动手学深度学习-模型选择-过拟合-欠拟合/"/>
+  <link rel="canonical" href="http://bugmaker11.github.io/2023/03/28/动手学深度学习-数值稳定性和模型初始化/"/>
 
 
 
 
 
-  <title>动手学深度学习-模型选择,过拟合,欠拟合 | miandui</title>
+  <title>动手学深度学习-数值稳定性和模型初始化 | miandui</title>
   
 
 
@@ -305,7 +300,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://bugmaker11.github.io/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/">
+    <link itemprop="mainEntityOfPage" href="http://bugmaker11.github.io/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -322,7 +317,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">动手学深度学习-模型选择,过拟合,欠拟合</h1>
+          <h1 class="post-title" itemprop="name headline">动手学深度学习-数值稳定性和模型初始化</h1>
         
 
         <div class="post-meta">
@@ -334,8 +329,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-03-25T22:25:14+08:00">
-                2023-03-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-03-28T11:51:05+08:00">
+                2023-03-28
               </time>
             
 
@@ -388,7 +383,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.8k
+                  1.3k
                 </span>
               
 
@@ -404,7 +399,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  7
+                  5
                 </span>
               
             </div>
@@ -412,7 +407,7 @@
 
           
               <div class="post-description">
-                  本文为DataWhale 3月动手学深度学习模型选择,欠拟合,过拟合笔记
+                  本文为DataWhale 3月动手学深度学习数值稳定性和模型初始化笔记
               </div>
           
 
@@ -429,102 +424,74 @@
       
 
       
-        <h1 id="模型选择-欠拟合-过拟合"><a href="#模型选择-欠拟合-过拟合" class="headerlink" title="模型选择,欠拟合,过拟合"></a>模型选择,欠拟合,过拟合</h1><p>欠拟合: 简单的模型用复杂的数据进行训练时容易欠拟合</p>
-<p>过拟合: 复杂的模型用简单的数据进行训练时容易过拟合,模型对训练数据的拟合比潜在的分布更接近</p>
-<p>所以: 模型容量需要匹配数据的复杂度</p>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/1.png" alt="1.png"></p>
-<h3 id="模型容量"><a href="#模型容量" class="headerlink" title="模型容量"></a>模型容量</h3><p>模型容量: 模型拟合各种函数的能力,低容量难以拟合数据,高容量容易记住所有训练数据</p>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/2.png" alt="2.png"></p>
-<h3 id="模型容量选择"><a href="#模型容量选择" class="headerlink" title="模型容量选择"></a>模型容量选择</h3><p>模型容量低时对训练数据拟合的不好,训练误差大</p>
-<p>模型容量高时对训练数据拟合更好,但模型容量太高容易导致过拟合,泛化误差反而增加</p>
-<p>泛化误差最小时训练的模型对新数据的拟合最好,模型最优</p>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/3.png" alt="3.png"></p>
-<h3 id="估计模型容量"><a href="#估计模型容量" class="headerlink" title="估计模型容量"></a>估计模型容量</h3><ol>
-<li>参数的个数</li>
-<li>参数值的选择范围</li>
-</ol>
-<p><strong>VC维</strong>  :</p>
-<p>模型能够记住的最大的数据集的大小,可以用来衡量模型好坏,但深度学习中很少使用,因为不准确且很难计算</p>
-<p>例子: 二维感知机能够区分3个点的任意放置,4个点时就有不能记住的类型了(xor),所以二维感知机的vc维&#x3D;3</p>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/4.png" alt="4.png"></p>
-<p><strong>数据复杂度:</strong></p>
+        <h1 id="数值稳定性和模型初始化"><a href="#数值稳定性和模型初始化" class="headerlink" title="数值稳定性和模型初始化"></a>数值稳定性和模型初始化</h1><h2 id="数值稳定性"><a href="#数值稳定性" class="headerlink" title="数值稳定性"></a>数值稳定性</h2><p>初始化方案的选择对于保持数值稳定性至关重要,我们还可以将初始化方案与非线性激活函数结合在一起,糟糕的选择可能会带来梯度消失和梯度爆炸</p>
+<h3 id="梯度消失和梯度爆炸"><a href="#梯度消失和梯度爆炸" class="headerlink" title="梯度消失和梯度爆炸"></a>梯度消失和梯度爆炸</h3><p>对于L层神经网络,每一层的输出$h^{(l)}$可以表示为:<br>$$\mathbf{h}^{(l)} &#x3D; f_l (\mathbf{h}^{(l-1)})<br>\text{ 因此输出o可以表示为 } \mathbf{o} &#x3D; f_L \circ \ldots \circ f_1(\mathbf{x}).$$</p>
+<p>输出o对任何一层参数$w^{(l)}$的梯度可以表示为:</p>
+<p>$\partial_{\mathbf{W}^{(l)}} \mathbf{o} &#x3D; \underbrace{\partial_{\mathbf{h}^{(L-1)}} \mathbf{h}^{(L)}}<em>{ \mathbf{M}^{(L)} \stackrel{\mathrm{def}}{&#x3D;}} \cdot \ldots \cdot \underbrace{\partial</em>{\mathbf{h}^{(l)}} \mathbf{h}^{(l+1)}}<em>{ \mathbf{M}^{(l+1)} \stackrel{\mathrm{def}}{&#x3D;}} \underbrace{\partial</em>{\mathbf{W}^{(l)}} \mathbf{h}^{(l)}}_{ \mathbf{v}^{(l)} \stackrel{\mathrm{def}}{&#x3D;}}.$</p>
+<p>因为该梯度是多个矩阵的乘积,当神经网络层数很多时,如$(0.8)^{n},(1.1)^{n}$,梯度就会接近0&#x2F;非常大,此时梯度的不稳定性容易威胁到优化算法的稳定性</p>
+<p>梯度爆炸的问题:</p>
 <ol>
-<li>样本个数</li>
-<li>每个样本的元素个数</li>
-<li>时间,空间结构</li>
-<li>多样性</li>
+<li>对16位浮点数容易超过表示的区间 $6e^{-5}-6e^{4}$ </li>
+<li>对学习率敏感.学习率会被限制在极小的范围内,大的话会导致梯度过大,小的话会导致训练无进展</li>
 </ol>
-<p>训练误差(training error): 模型在训练数据集上计算得到的误差</p>
-<p>泛化误差(generalization error): 模型应用在新数据集上计算得到的误差</p>
-<p>训练数据集: 训练模型参数</p>
-<p>验证数据集: 用来训练时评估模型好坏的数据集,用来选择模型的超参数</p>
-<p>测试数据集: 只用一次的数据集,用来应用模型</p>
-<p>K折交叉验证</p>
-<p>将原始数据集分成K个不交叉的子集,然后执行K次模型训练和验证,每次在K-1个子集上训练,在最后一个子集上验证,最后对K次实验的结果取平均来估计训练和验证误差</p>
-<p>K折交叉验证常用于样本数据很小时,避免验证的数据集占比过大,K的数量越大模型训练效果越好,但K越大训练的次数越多,要考虑到成本因素进行控制</p>
-<h1 id="过拟合和欠拟合的样例"><a href="#过拟合和欠拟合的样例" class="headerlink" title="过拟合和欠拟合的样例"></a>过拟合和欠拟合的样例</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">&#x27;KMP_DUPLICATE_LIB_OK&#x27;</span>]=<span class="string">&#x27;True&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>梯度消失的问题:</p>
+<ol>
+<li>梯度值变为0,也是超过16位浮点数表示的区间</li>
+<li>训练没有进展,梯度值变0参数几乎没有改变,没有训练效果</li>
+<li>对于较深层的神经网络训练效果很差,因为梯度是反向传播计算,深层的梯度为0就没有训练效果</li>
+</ol>
+<h3 id="梯度消失例子"><a href="#梯度消失例子" class="headerlink" title="梯度消失例子"></a>梯度消失例子</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">&#x27;KMP_DUPLICATE_LIB_OK&#x27;</span>]=<span class="string">&#x27;True&#x27;</span></span><br></pre></td></tr></table></figure>
 
 
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure>
-
-<p>生成数据集</p>
-<p><strong>$$y &#x3D; 5 + 1.2x - 3.4\frac{x^2}{2!} + 5.6 \frac{x^3}{3!} + \epsilon \text{ where }\epsilon \sim \mathcal{N}(0, 0.1^2).$$</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">max_degree = <span class="number">20</span> </span><br><span class="line">n_train,n_test = <span class="number">100</span>,<span class="number">100</span> <span class="comment">#训练集,验证集的大小</span></span><br><span class="line">true_w = np.zeros(max_degree) <span class="comment">#创造一个20维的向量w,4维之后的都是扰动</span></span><br><span class="line">true_w[<span class="number">0</span>:<span class="number">4</span>] = np.array([<span class="number">5</span>,<span class="number">1.2</span>,-<span class="number">3.4</span>,<span class="number">5.6</span>]) <span class="comment">#前4维是正确的参数</span></span><br><span class="line">features = np.random.normal(size=(n_train + n_test,<span class="number">1</span>)) <span class="comment">#生成一个200行1列的随机数据作为x</span></span><br><span class="line">np.random.shuffle(features) <span class="comment">#将features打乱</span></span><br><span class="line">poly_features = np.power(features,np.arange(max_degree).reshape(<span class="number">1</span>,-<span class="number">1</span>)) <span class="comment">#将featruers中的每个x做[0次方,1次方,2次方...],此时x作为多项式回归模型的输入，使模型能够捕捉特征与目标变量之间的非线性关系。</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_degree):</span><br><span class="line">    poly_features[:,i] /= math.gamma(i+<span class="number">1</span>) <span class="comment">#对生成的features进行归一化</span></span><br><span class="line">labels = np.dot(poly_features,true_w) <span class="comment">#x和w点积</span></span><br><span class="line">labels += np.random.normal(scale=<span class="number">0.1</span>,size = labels.shape) <span class="comment">#x和w点积+扰动=y</span></span><br></pre></td></tr></table></figure>
-
-<p>true_w、features、poly_features 和 labels 都是 numpy 数组，分别表示真实权重、样本特征、多项式特征矩阵和目标变量。通过将它们转换为 PyTorch 的 tensor 类型，我们可以在 PyTorch 中进行深度学习模型的训练和优化，同时还可以利用 GPU 等硬件加速功能来提高计算性能。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">true_w,features,poly_features,labels = [torch.tensor(x,dtype=torch.float32) </span><br><span class="line">                            <span class="keyword">for</span> x <span class="keyword">in</span> [true_w,features,poly_features,labels]]</span><br></pre></td></tr></table></figure>
-
-<p>features[:2] 表示选取 features 数组的前两行，即前两个样本的特征向量。</p>
-<p>poly_features[:2,:] 表示选取 poly_features 数组的前两行和所有列，即前两个样本的多项式特征矩阵。</p>
-<p>labels[:2] 表示选取 labels 数组的前两个元素，即前两个样本的目标变量。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">features[:<span class="number">2</span>],poly_features[:<span class="number">2</span>,:],labels[:<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br><span class="line"></span><br><span class="line">x = torch.arange(-<span class="number">8.0</span>, <span class="number">8.0</span>, <span class="number">0.1</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = torch.sigmoid(x)</span><br><span class="line">y.backward(torch.ones_like(x))</span><br><span class="line"></span><br><span class="line">d2l.plot(x.detach().numpy(), [y.detach().numpy(), x.grad.numpy()],</span><br><span class="line">         legend=[<span class="string">&#x27;sigmoid&#x27;</span>, <span class="string">&#x27;gradient&#x27;</span>], figsize=(<span class="number">4.5</span>, <span class="number">2.5</span>))</span><br></pre></td></tr></table></figure>
 
 
+<p><img src="/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/output_8_0.svg" alt="svg"></p>
+<p>​    </p>
+<p>如图可以看出,当sigmoid函数的输入很大或很小时,梯度都会接近0,梯度消失.</p>
+<h3 id="梯度爆炸例子"><a href="#梯度爆炸例子" class="headerlink" title="梯度爆炸例子"></a>梯度爆炸例子</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">M = torch.normal(<span class="number">0</span>, <span class="number">1</span>, size=(<span class="number">4</span>,<span class="number">4</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;一个矩阵 \n&#x27;</span>,M)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    M = torch.mm(M,torch.normal(<span class="number">0</span>, <span class="number">1</span>, size=(<span class="number">4</span>, <span class="number">4</span>)))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;乘以100个矩阵后\n&#x27;</span>, M)</span><br></pre></td></tr></table></figure>
 
-
-<pre><code>(tensor([[ 0.4346],
-         [-0.0716]]),
- tensor([[ 1.0000e+00,  4.3461e-01,  9.4444e-02,  1.3682e-02,  1.4866e-03,
-           1.2922e-04,  9.3600e-06,  5.8114e-07,  3.1571e-08,  1.5246e-09,
-           6.6260e-11,  2.6180e-12,  9.4816e-14,  3.1699e-15,  9.8404e-17,
-           2.8512e-18,  7.7447e-20,  1.9800e-21,  4.7807e-23,  1.0935e-24],
-         [ 1.0000e+00, -7.1576e-02,  2.5616e-03, -6.1116e-05,  1.0936e-06,
-          -1.5655e-08,  1.8676e-10, -1.9096e-12,  1.7086e-14, -1.3588e-16,
-           9.7258e-19, -6.3285e-21,  3.7748e-23, -2.0783e-25,  1.0626e-27,
-          -5.0703e-30,  2.2682e-32, -9.5499e-35,  3.7975e-37, -1.4306e-39]]),
- tensor([5.2514, 4.9395]))
+<pre><code>一个矩阵 
+ tensor([[-1.5478,  0.8112,  0.8132, -0.7599],
+        [-0.9211,  1.0384,  1.1417,  0.0916],
+        [-0.3887,  1.1294,  1.5851,  0.5011],
+        [-1.2066, -1.5591, -0.0459, -1.0900]])
+乘以100个矩阵后
+ tensor([[ 1.4470e+24,  3.7913e+24, -1.6832e+25, -4.9491e+23],
+        [ 1.1020e+24,  2.8874e+24, -1.2819e+25, -3.7690e+23],
+        [-8.9897e+24, -2.3554e+25,  1.0457e+26,  3.0749e+24],
+        [ 4.9775e+25,  1.3042e+26, -5.7901e+26, -1.7025e+25]])
 </code></pre>
-<p>对模型进行训练和测试</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate_loss</span>(<span class="params">net,data_iter,loss</span>): <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;评估损失&quot;&quot;&quot;</span></span><br><span class="line">    metric = d2l.Accumulator(<span class="number">2</span>) <span class="comment">#累加器对象,有2维,一个表示累加总和,一个表示累加的数的个数</span></span><br><span class="line">    <span class="keyword">for</span> X,y <span class="keyword">in</span> data_iter:</span><br><span class="line">        out = net(X) <span class="comment">#根据x计算y</span></span><br><span class="line">        y = y.reshape(out.shape) <span class="comment">#y改变成和out一样的形状</span></span><br><span class="line">        l = loss(out,y) <span class="comment">#算损失</span></span><br><span class="line">        metric.add(l.<span class="built_in">sum</span>(),l.numel()) <span class="comment">#将l的信息输入累加器</span></span><br><span class="line">    <span class="keyword">return</span> metric[<span class="number">0</span>] / metric[<span class="number">1</span>] <span class="comment">#返回平均损失</span></span><br></pre></td></tr></table></figure>
-
-<p>训练函数</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">train_features,test_features,train_labels,test_labels,num_epochs=<span class="number">400</span></span>):</span><br><span class="line">    loss = nn.MSELoss(reduction=<span class="string">&#x27;none&#x27;</span>) <span class="comment">#不损失降维操作的均方误差(即返回所有损失值,不进行求和等运算)</span></span><br><span class="line">    input_shape = train_features.shape[-<span class="number">1</span>] <span class="comment">#最后一个维度的大小,即每个样本的特征数</span></span><br><span class="line">    net = nn.Sequential(nn.Linear(input_shape,<span class="number">1</span>,bias=<span class="literal">False</span>))</span><br><span class="line">    batch_size = <span class="built_in">min</span>(<span class="number">10</span>,train_labels.shape[<span class="number">0</span>]) <span class="comment">#barch_size 在不超过训练集大小的情况下,一次取10个</span></span><br><span class="line">    train_iter = d2l.load_array((train_features,train_labels.reshape(-<span class="number">1</span>,<span class="number">1</span>)),batch_size) <span class="comment">#迭代器输入训练的x,y,每次输出batch_size个数</span></span><br><span class="line">    test_iter = d2l.load_array((test_features,test_labels.reshape(-<span class="number">1</span>,<span class="number">1</span>)),batch_size,is_train=<span class="literal">False</span>)</span><br><span class="line">    trainer = torch.optim.SGD(net.parameters(),lr=<span class="number">0.01</span>) <span class="comment">#定义了一个使用随机梯度下降（SGD）算法进行模型参数优化的优化器</span></span><br><span class="line">    animator = d2l.Animator(xlabel=<span class="string">&#x27;epoch&#x27;</span>,ylabel=<span class="string">&#x27;loss&#x27;</span>,yscale=<span class="string">&#x27;log&#x27;</span>,xlim=[<span class="number">1</span>,num_epochs],ylim=[<span class="number">1e-3</span>,<span class="number">1e2</span>],legend=[<span class="string">&#x27;train&#x27;</span>,<span class="string">&#x27;test&#x27;</span>]) <span class="comment">#绘制训练损失和测试损失随着训练迭代次数的变化趋势</span></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">        d2l.train_epoch_ch3(net,train_iter,loss,trainer)</span><br><span class="line">        <span class="keyword">if</span> epoch == <span class="number">0</span> <span class="keyword">or</span> (epoch + <span class="number">1</span>) % <span class="number">20</span> == <span class="number">0</span>:</span><br><span class="line">            animator.add(epoch +<span class="number">1</span>,(evaluate_loss(net,train_iter,loss),evaluate_loss(net,test_iter,loss)))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;weight:&#x27;</span>,net[<span class="number">0</span>].weight.data.numpy())</span><br></pre></td></tr></table></figure>
-
-<p><strong>三阶多项式函数拟合</strong></p>
-<p>四个输入分别是: 前n_train(100)行4列作为训练集,n_train(100)行后面所有行4列作为测试集,labels前n_train行作为train_labels(y^),labels的n_train后面所有行作为test_labels(y^)</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train(poly_features[:n_train,:<span class="number">4</span>],poly_features[n_train:,:<span class="number">4</span>],labels[:n_train],labels[n_train:])</span><br></pre></td></tr></table></figure>
-
-<pre><code>weight: [[ 4.99034    1.1656325 -3.4056838  5.650331 ]]
-</code></pre>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/output_28_1.svg" alt="svg"></p>
-<p>可以看出,w给前4维时拟合的很好</p>
-<p><strong>线性函数拟合(欠拟合)</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train(poly_features[:n_train, :<span class="number">2</span>], poly_features[n_train:, :<span class="number">2</span>],labels[:n_train], labels[n_train:])</span><br></pre></td></tr></table></figure>
-
-<pre><code>weight: [[3.4050567 3.404248 ]]
-</code></pre>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/output_31_1.svg" alt="svg"></p>
-<p>w只给前2个维度时给的数据不足,欠拟合</p>
-<p><strong>高阶多项式函数拟合(过拟合)</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train(poly_features[:n_train, :], poly_features[n_train:, :],</span><br><span class="line">      labels[:n_train], labels[n_train:], num_epochs=<span class="number">1500</span>)</span><br></pre></td></tr></table></figure>
-
-<pre><code>weight: [[ 4.964952    1.2093626  -3.2487652   5.3281727  -0.5115174   1.2561612
-  -0.06610011  0.18418686  0.11113311  0.01419835  0.15148187  0.10667927
-   0.18928145 -0.13205634  0.18986128  0.16003044 -0.0809902  -0.20620278
-  -0.03729296 -0.01795298]]
-</code></pre>
-<p><img src="/2023/03/25/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E8%BF%87%E6%8B%9F%E5%90%88-%E6%AC%A0%E6%8B%9F%E5%90%88/output_34_1.svg" alt="svg"></p>
-<p>w给了20维度,因为4维之后的参数都是扰动,所以模型过大会导致过拟合</p>
+<p>从上图可以看出,即使初始矩阵的元素值并不大,但经过100次相乘后,矩阵的元素值变得非常大</p>
+<h2 id="模型初始化和激活函数"><a href="#模型初始化和激活函数" class="headerlink" title="模型初始化和激活函数"></a>模型初始化和激活函数</h2><p>目标:<br>让梯度值在合理的范围内</p>
+<p>方法:</p>
+<ol>
+<li>将乘法变加法:ResNet,LSTM</li>
+<li>归一化:梯度归一化,梯度裁剪</li>
+<li>合理的<strong>权重初始</strong>和<strong>激活函数</strong></li>
+</ol>
+<h3 id="模型初始化"><a href="#模型初始化" class="headerlink" title="模型初始化"></a>模型初始化</h3><p>目标:让每层的方差是一个常数</p>
+<p>让每层的(<strong>输出</strong>和<strong>梯度</strong>)的(<strong>均值</strong>和<strong>方差</strong>)保持一致</p>
+<p>权重初始化</p>
+<p>在合理区间内随机初始参数,因为训练开始的时候容易有数值不稳定,为了实现每层的方差是一个常数,需要满足下面两个条件:<br>$n_{t-1}\gamma_t &#x3D; 1 (输出的均值和方差不变的近似解)$ </p>
+<p>$n_{t} \gamma_t  &#x3D; 1  (梯度的均值和方差不变的近似解)$</p>
+<p>然而这两个条件很难同时满足,所以权衡之下,<strong>Xavier方法</strong>:</p>
+<p>$\gamma_{t}(n_{t-1}+n_{t})&#x2F;2 &#x3D; 1 (其中\gamma 是权重的方差,n_{t-1}是输入的数量,n_{t}是输出的数量)$</p>
+<p>$\sigma &#x3D; \sqrt{\frac{2}{n_{t-1} + n_{t}}} (其中\sigma 是权重w的标准差)$</p>
+<p>所以满足这个标准差的初始参数就近似满足输出和梯度的均值和方差保持一致</p>
+<p>此时初始参数w可以满足下列分布:</p>
+<p>正态分布:$ \boldsymbol W^{[l]} \sim N(\mu&#x3D;0,\sigma^2&#x3D;\frac{1}{n^{[l-1]}})$</p>
+<p>均匀分布: $\boldsymbol W\sim U[-\frac{\sqrt 6}{\sqrt {n_{in}+n_{out}}},\frac{\sqrt6}{\sqrt {n_{in}+n_{out}}}]$</p>
+<h3 id="假设线性的激活函数"><a href="#假设线性的激活函数" class="headerlink" title="假设线性的激活函数"></a>假设线性的激活函数</h3><p>假设激活函数为 $\sigma(x) &#x3D; \alpha x + \beta$,为了保证让每层的(<strong>输出</strong>和<strong>梯度</strong>)的(<strong>均值</strong>和<strong>方差</strong>)保持一致,需要 $\alpha &#x3D; 1,\beta &#x3D; 0$</p>
+<p>为了让激活函数的(<strong>输出</strong>和<strong>梯度</strong>)的(<strong>均值</strong>和<strong>方差</strong>)保持一致,需要修改部分的激活函数:</p>
+<p>检查常用的激活函数;</p>
+<p>使用泰勒展开:</p>
+<p>$ (不满足)sigmoid(x) &#x3D; \frac{1}{2}+ \frac{x}{4} - \frac{x^{3}}{48} + \omicron (x^{5}) $ </p>
+<p>$(满足)tanh(x) &#x3D; 0 + x - \frac{x^{3}}{3} + \omicron (x^{5})$</p>
+<p>$(满足) relu(x) &#x3D; 0 + x $</p>
+<p>调整$sigmoid$使之满足输出和梯度保持一致的条件:<br>$4 * sigmoid(x) - 2$</p>
+<p><img src="/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%E6%9B%B2%E7%BA%BF.png" alt="img"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>合理的权重初始值和激活函数能够提升数值稳定性,但不能使数值一定稳定</p>
 
       
     </div>
@@ -555,8 +522,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2023/03/24/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/" rel="next" title="动手学深度学习-多层感知机">
-                <i class="fa fa-chevron-left"></i> 动手学深度学习-多层感知机
+              <a href="/2023/03/27/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%9A%82%E9%80%80%E6%B3%95/" rel="next" title="动手学深度学习-暂退法">
+                <i class="fa fa-chevron-left"></i> 动手学深度学习-暂退法
               </a>
             
           </div>
@@ -564,10 +531,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2023/03/26/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%9D%83%E9%87%8D%E8%A1%B0%E5%87%8F/" rel="prev" title="动手学深度学习-权重衰减">
-                动手学深度学习-权重衰减 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -719,7 +682,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9-%E6%AC%A0%E6%8B%9F%E5%90%88-%E8%BF%87%E6%8B%9F%E5%90%88"><span class="nav-number">1.</span> <span class="nav-text">模型选择,欠拟合,过拟合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AE%B9%E9%87%8F"><span class="nav-number">1.0.1.</span> <span class="nav-text">模型容量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AE%B9%E9%87%8F%E9%80%89%E6%8B%A9"><span class="nav-number">1.0.2.</span> <span class="nav-text">模型容量选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%B0%E8%AE%A1%E6%A8%A1%E5%9E%8B%E5%AE%B9%E9%87%8F"><span class="nav-number">1.0.3.</span> <span class="nav-text">估计模型容量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%87%E6%8B%9F%E5%90%88%E5%92%8C%E6%AC%A0%E6%8B%9F%E5%90%88%E7%9A%84%E6%A0%B7%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">过拟合和欠拟合的样例</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">数值稳定性和模型初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">数值稳定性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E5%92%8C%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8"><span class="nav-number">1.1.1.</span> <span class="nav-text">梯度消失和梯度爆炸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%E4%BE%8B%E5%AD%90"><span class="nav-number">1.1.2.</span> <span class="nav-text">梯度消失例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8%E4%BE%8B%E5%AD%90"><span class="nav-number">1.1.3.</span> <span class="nav-text">梯度爆炸例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">模型初始化和激活函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.2.1.</span> <span class="nav-text">模型初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%87%E8%AE%BE%E7%BA%BF%E6%80%A7%E7%9A%84%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.2.</span> <span class="nav-text">假设线性的激活函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
             
 
           </div>
