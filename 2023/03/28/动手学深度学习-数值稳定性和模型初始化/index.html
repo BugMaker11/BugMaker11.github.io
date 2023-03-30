@@ -86,14 +86,15 @@
 <meta property="og:site_name" content="miandui">
 <meta property="og:description" content="本文为DataWhale 3月动手学深度学习数值稳定性和模型初始化笔记">
 <meta property="og:locale">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/%E6%A2%AF%E5%BA%A6.png">
 <meta property="og:image" content="http://bugmaker11.github.io/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/output_8_0.svg">
 <meta property="og:image" content="http://bugmaker11.github.io/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%E6%9B%B2%E7%BA%BF.png">
 <meta property="article:published_time" content="2023-03-28T03:51:05.000Z">
-<meta property="article:modified_time" content="2023-03-28T04:29:32.453Z">
+<meta property="article:modified_time" content="2023-03-28T04:31:47.577Z">
 <meta property="article:author" content="miandui">
 <meta property="article:tag" content="深度学习笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://bugmaker11.github.io/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/output_8_0.svg">
+<meta name="twitter:image" content="http://bugmaker11.github.io/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/%E6%A2%AF%E5%BA%A6.png">
 
 
 
@@ -428,6 +429,7 @@
 <h3 id="梯度消失和梯度爆炸"><a href="#梯度消失和梯度爆炸" class="headerlink" title="梯度消失和梯度爆炸"></a>梯度消失和梯度爆炸</h3><p>对于L层神经网络,每一层的输出$h^{(l)}$可以表示为:<br>$$\mathbf{h}^{(l)} &#x3D; f_l (\mathbf{h}^{(l-1)})<br>\text{ 因此输出o可以表示为 } \mathbf{o} &#x3D; f_L \circ \ldots \circ f_1(\mathbf{x}).$$</p>
 <p>输出o对任何一层参数$w^{(l)}$的梯度可以表示为:</p>
 <p>$\partial_{\mathbf{W}^{(l)} }\mathbf{o}&#x3D;\underbrace{\partial_{\mathbf{h}^ {(L-1)} }\mathbf{h}^{(L)} }<em>{\mathbf{M}^{(L)}\stackrel{\mathrm{def} }{&#x3D;} }\cdot \ldots \cdot \underbrace{\partial</em>{\mathbf{h}^{(l)} } \mathbf{h}^{(l+1)} }<em>{ \mathbf{M}^{(l+1)} \stackrel{\mathrm{def} } {&#x3D;} } \underbrace{\partial</em>{\mathbf{W}^{(l)} } \mathbf{h}^{(l)} }_{\mathbf{v}^{(l)} \stackrel{\mathrm{def} } {&#x3D;} }.$</p>
+<p><img src="/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/%E6%A2%AF%E5%BA%A6.png" alt="svg"></p>
 <p>因为该梯度是多个矩阵的乘积,当神经网络层数很多时,如$(0.8)^{n},(1.1)^{n}$,梯度就会接近0&#x2F;非常大,此时梯度的不稳定性容易威胁到优化算法的稳定性</p>
 <p>梯度爆炸的问题:</p>
 <ol>
@@ -532,6 +534,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" rel="prev" title="动手学深度学习-二手车交易价格预测-线性模型">
+                动手学深度学习-二手车交易价格预测-线性模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -611,7 +617,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -716,7 +722,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">13.5k</span>
+    <span title="Site words total count">15.7k</span>
   
 </div>
 

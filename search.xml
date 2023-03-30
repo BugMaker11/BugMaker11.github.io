@@ -1812,6 +1812,7 @@ tensor([[0., 0., 0., 0., 0., 0., 0., 0.],
 <h3 id="梯度消失和梯度爆炸"><a href="#梯度消失和梯度爆炸" class="headerlink" title="梯度消失和梯度爆炸"></a>梯度消失和梯度爆炸</h3><p>对于L层神经网络,每一层的输出$h^{(l)}$可以表示为:<br>$$\mathbf{h}^{(l)} &#x3D; f_l (\mathbf{h}^{(l-1)})<br>\text{ 因此输出o可以表示为 } \mathbf{o} &#x3D; f_L \circ \ldots \circ f_1(\mathbf{x}).$$</p>
 <p>输出o对任何一层参数$w^{(l)}$的梯度可以表示为:</p>
 <p>$\partial_{\mathbf{W}^{(l)} }\mathbf{o}&#x3D;\underbrace{\partial_{\mathbf{h}^ {(L-1)} }\mathbf{h}^{(L)} }<em>{\mathbf{M}^{(L)}\stackrel{\mathrm{def} }{&#x3D;} }\cdot \ldots \cdot \underbrace{\partial</em>{\mathbf{h}^{(l)} } \mathbf{h}^{(l+1)} }<em>{ \mathbf{M}^{(l+1)} \stackrel{\mathrm{def} } {&#x3D;} } \underbrace{\partial</em>{\mathbf{W}^{(l)} } \mathbf{h}^{(l)} }_{\mathbf{v}^{(l)} \stackrel{\mathrm{def} } {&#x3D;} }.$</p>
+<p><img src="/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/%E6%A2%AF%E5%BA%A6.png" alt="svg"></p>
 <p>因为该梯度是多个矩阵的乘积,当神经网络层数很多时,如$(0.8)^{n},(1.1)^{n}$,梯度就会接近0&#x2F;非常大,此时梯度的不稳定性容易威胁到优化算法的稳定性</p>
 <p>梯度爆炸的问题:</p>
 <ol>
@@ -1876,6 +1877,169 @@ tensor([[0., 0., 0., 0., 0., 0., 0., 0.],
 <p>调整$sigmoid$使之满足输出和梯度保持一致的条件:<br>$4 * sigmoid(x) - 2$</p>
 <p><img src="/2023/03/28/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96/%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%E6%9B%B2%E7%BA%BF.png" alt="img"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>合理的权重初始值和激活函数能够提升数值稳定性,但不能使数值一定稳定</p>
+]]></content>
+      <categories>
+        <category>动手学深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>动手学深度学习-二手车交易价格预测-线性模型</title>
+    <url>/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[<h1 id="二手车交易价格预测-线性模型"><a href="#二手车交易价格预测-线性模型" class="headerlink" title="二手车交易价格预测-线性模型"></a>二手车交易价格预测-线性模型</h1><p>本次套用李沐老师预测房价的模型代码,经过调整适配于二手车交易价格预测,虽然最后预测效果不好,不过可以用于练习学过的线性模型</p>
+<h2 id="一-导包"><a href="#一-导包" class="headerlink" title="一.导包"></a>一.导包</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">&#x27;KMP_DUPLICATE_LIB_OK&#x27;</span>]=<span class="string">&#x27;True&#x27;</span></span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> tarfile</span><br><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"><span class="keyword">import</span> requests</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure>
+
+<h2 id="二-下载数据集"><a href="#二-下载数据集" class="headerlink" title="二.下载数据集"></a>二.下载数据集</h2><p>本来应该从网络上下载,不过下载后的数据只有一列,用pandas处理比较麻烦,所以我直接下载到本地用excel预先处理,从网络下载的代码在后面附出</p>
+<h3 id="1-从本地导入数据"><a href="#1-从本地导入数据" class="headerlink" title="1.从本地导入数据"></a>1.从本地导入数据</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train_data = pd.read_csv(<span class="string">&#x27;F://d2l-zh/pytorch/data/used_car_train_20200313.csv&#x27;</span> )</span><br><span class="line">test_data = pd.read_csv(<span class="string">&#x27;F://d2l-zh/pytorch/data/used_car_testB_20200421.csv&#x27;</span> )</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-从网络下载数据"><a href="#2-从网络下载数据" class="headerlink" title="2.从网络下载数据"></a>2.从网络下载数据</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#@save</span></span><br><span class="line">DATA_HUB = <span class="built_in">dict</span>()</span><br><span class="line">DATA_URL1 = <span class="string">&#x27;https://tianchi-race-prod-sh.oss-cn-shanghai.aliyuncs.com/file/race/documents/231784/used_car_train_20200313.zip?Expires=1680139786&amp;OSSAccessKeyId=LTAI5t7fj2oKqzKgLGz6kGQc&amp;Signature=6NVCaSeNQmjOjHQhufO%2F9CpKwkg%3D&amp;response-content-disposition=attachment%3B%20&#x27;</span></span><br><span class="line">DATA_URL2 = <span class="string">&#x27;https://tianchi-race-prod-sh.oss-cn-shanghai.aliyuncs.com/file/race/documents/231784/used_car_testB_20200421.zip?Expires=1680139718&amp;OSSAccessKeyId=LTAI5t7fj2oKqzKgLGz6kGQc&amp;Signature=d%2FbMvvlSkA%2Bz8tGj8xyNlrChWYc%3D&amp;response-content-disposition=attachment%3B%20&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">download</span>(<span class="params">name, cache_dir=os.path.join(<span class="params"><span class="string">&#x27;..&#x27;</span>, <span class="string">&#x27;data&#x27;</span></span>)</span>):  <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;下载一个DATA_HUB中的文件，返回本地文件名&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">assert</span> name <span class="keyword">in</span> DATA_HUB, <span class="string">f&quot;<span class="subst">&#123;name&#125;</span> 不存在于 <span class="subst">&#123;DATA_HUB&#125;</span>&quot;</span></span><br><span class="line">    url, sha1_hash = DATA_HUB[name]</span><br><span class="line">    os.makedirs(cache_dir, exist_ok=<span class="literal">True</span>)</span><br><span class="line">    <span class="comment">#fname = os.path.join(cache_dir, url.split(&#x27;/&#x27;)[-1])</span></span><br><span class="line">    fname = os.path.join(url.split(<span class="string">&#x27;/&#x27;</span>)[-<span class="number">1</span>].split(<span class="string">&#x27;?&#x27;</span>)[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">if</span> os.path.exists(fname):</span><br><span class="line">        sha1 = hashlib.sha1()</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(fname, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                data = f.read(<span class="number">1048576</span>)</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> data:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                sha1.update(data)</span><br><span class="line">        <span class="keyword">if</span> sha1.hexdigest() == sha1_hash:</span><br><span class="line">            <span class="keyword">return</span> fname  <span class="comment"># 命中缓存</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;正在从<span class="subst">&#123;url&#125;</span>下载<span class="subst">&#123;fname&#125;</span>...&#x27;</span>)</span><br><span class="line">    r = requests.get(url, stream=<span class="literal">True</span>, verify=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(fname, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(r.content)</span><br><span class="line">    <span class="keyword">return</span> fname</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">download_extract</span>(<span class="params">name, folder=<span class="literal">None</span></span>):  <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;下载并解压zip/tar文件&quot;&quot;&quot;</span></span><br><span class="line">    fname = download(name)</span><br><span class="line">    base_dir = os.path.dirname(fname)</span><br><span class="line">    data_dir, ext = os.path.splitext(fname)</span><br><span class="line">    <span class="keyword">if</span> ext == <span class="string">&#x27;.zip&#x27;</span>:</span><br><span class="line">        fp = zipfile.ZipFile(fname, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    <span class="keyword">elif</span> ext <span class="keyword">in</span> (<span class="string">&#x27;.tar&#x27;</span>, <span class="string">&#x27;.gz&#x27;</span>):</span><br><span class="line">        fp = tarfile.<span class="built_in">open</span>(fname, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">assert</span> <span class="literal">False</span>, <span class="string">&#x27;只有zip/tar文件可以被解压缩&#x27;</span></span><br><span class="line">    fp.extractall(base_dir)</span><br><span class="line">    <span class="keyword">return</span> os.path.join(base_dir, folder) <span class="keyword">if</span> folder <span class="keyword">else</span> data_dir</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">download_all</span>():  <span class="comment">#@save</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;下载DATA_HUB中的所有文件&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> name <span class="keyword">in</span> DATA_HUB:</span><br><span class="line">        download(name)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">DATA_HUB[<span class="string">&#x27;tianchi_car_train&#x27;</span>] = (  <span class="comment">#@save</span></span><br><span class="line">    DATA_URL1 ,</span><br><span class="line">    <span class="string">&#x27;585e9cc93e70b39160e7921475f9bcd7d31219ce&#x27;</span>)</span><br><span class="line"></span><br><span class="line">DATA_HUB[<span class="string">&#x27;tianchi_car_test&#x27;</span>] = (  <span class="comment">#@save</span></span><br><span class="line">    DATA_URL2 ,</span><br><span class="line">    <span class="string">&#x27;fa19780a7b011d9b009e8bff8e99922a8ee2eb90&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train_data = pd.read_csv(download_extract(<span class="string">&#x27;tianchi_car_train&#x27;</span>) )</span><br><span class="line">test_data = pd.read_csv(download_extract(<span class="string">&#x27;tianchi_car_test&#x27;</span>) )</span><br></pre></td></tr></table></figure>
+
+<h2 id="三-处理数据集"><a href="#三-处理数据集" class="headerlink" title="三.处理数据集"></a>三.处理数据集</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(train_data.shape)</span><br><span class="line"><span class="built_in">print</span>(test_data.shape)</span><br></pre></td></tr></table></figure>
+
+<pre><code>(150000, 31)
+(50000, 30)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#删除掉会使log()变成nan的行</span></span><br><span class="line"><span class="comment">#例子:df.drop(df[(df.score &lt; 50) &amp; (df.score &gt; 20)].index， inplace=True)</span></span><br><span class="line">train_data.drop(train_data[(train_data.price &lt; <span class="number">1</span>)].index, inplace=<span class="literal">True</span>) </span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将去掉id和y的训练集,测试集数据连在一起,方便以后使用</span></span><br><span class="line">all_features = pd.concat( (train_data.drop([<span class="string">&#x27;SaleID&#x27;</span>, <span class="string">&#x27;price&#x27;</span>], axis=<span class="number">1</span>), test_data.drop([<span class="string">&#x27;SaleID&#x27;</span>], axis=<span class="number">1</span>)))</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(all_features.shape)</span><br></pre></td></tr></table></figure>
+
+<pre><code>(198397, 29)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">all_features.info()</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 198397 entries, 0 to 49999
+Data columns (total 29 columns):
+ #   Column             Non-Null Count   Dtype  
+---  ------             --------------   -----  
+ 0   name               198397 non-null  int64  
+ 1   regDate            198397 non-null  int64  
+ 2   model              198397 non-null  int64  
+ 3   brand              198397 non-null  int64  
+ 4   bodyType           198397 non-null  int64  
+ 5   fuelType           198397 non-null  float64
+ 6   gearbox            198397 non-null  object 
+ 7   power              198397 non-null  object 
+ 8   kilometer          198397 non-null  object 
+ 9   notRepairedDamage  198397 non-null  object 
+ 10  regionCode         198397 non-null  int64  
+ 11  seller             198397 non-null  float64
+ 12  offerType          198397 non-null  float64
+ 13  creatDate          198397 non-null  float64
+ 14  v_0                198397 non-null  float64
+ 15  v_1                198397 non-null  float64
+ 16  v_2                198397 non-null  float64
+ 17  v_3                198397 non-null  float64
+ 18  v_4                198397 non-null  float64
+ 19  v_5                198397 non-null  float64
+ 20  v_6                198397 non-null  float64
+ 21  v_7                198397 non-null  float64
+ 22  v_8                198397 non-null  float64
+ 23  v_9                198397 non-null  float64
+ 24  v_10               198397 non-null  float64
+ 25  v_11               198397 non-null  float64
+ 26  v_12               196435 non-null  float64
+ 27  v_13               195188 non-null  float64
+ 28  v_14               181210 non-null  float64
+dtypes: float64(19), int64(6), object(4)
+memory usage: 45.4+ MB
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将dtype=object 的数值更改为数值型数据,否则这些数据会被当作字符串处理</span></span><br><span class="line"><span class="comment">#例子df_valid[&quot;val&quot;] = pd.to_numeric(df_valid[&quot;val&quot;],errors=&#x27;coerce&#x27;)</span></span><br><span class="line">all_features[<span class="string">&quot;gearbox&quot;</span>] = pd.to_numeric(all_features[<span class="string">&quot;gearbox&quot;</span>],errors=<span class="string">&#x27;coerce&#x27;</span>)</span><br><span class="line">all_features[<span class="string">&quot;power&quot;</span>] = pd.to_numeric(all_features[<span class="string">&quot;power&quot;</span>],errors=<span class="string">&#x27;coerce&#x27;</span>)</span><br><span class="line">all_features[<span class="string">&quot;kilometer&quot;</span>] = pd.to_numeric(all_features[<span class="string">&quot;kilometer&quot;</span>],errors=<span class="string">&#x27;coerce&#x27;</span>)</span><br><span class="line">all_features[<span class="string">&quot;notRepairedDamage&quot;</span>] = pd.to_numeric(all_features[<span class="string">&quot;notRepairedDamage&quot;</span>],errors=<span class="string">&#x27;coerce&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 找出所有的数值型数据,进行标准化</span></span><br><span class="line">numeric_features = all_features.dtypes[all_features.dtypes != <span class="string">&#x27;object&#x27;</span>].index</span><br><span class="line">all_features[numeric_features] = all_features[numeric_features].apply(</span><br><span class="line">    <span class="keyword">lambda</span> x: (x - x.mean()) / (x.std()))</span><br><span class="line"><span class="comment"># 在标准化数据之后，所有均值消失，因此我们可以将缺失值设置为0</span></span><br><span class="line">all_features[numeric_features] = all_features[numeric_features].fillna(<span class="number">0</span>)</span><br><span class="line"><span class="comment">#all_features = all_features.select_dtypes(exclude=[&#x27;float&#x27;, &#x27;int&#x27;]).fillna(0)</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(all_features[<span class="number">0</span>:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
+
+<pre><code>       name   regDate     model     brand  bodyType  fuelType   gearbox  \
+0 -1.103673  0.113972 -0.349400 -0.261700 -0.171899 -0.105626 -0.079676   
+1 -1.078674 -0.074366 -0.147912 -0.896951  0.023307 -0.105626 -0.079676   
+2 -0.872068  0.113991  1.363247  0.881754 -0.171899 -0.105626 -0.079676   
+3  0.061542 -1.368231  1.242354  0.246502 -0.367106 -0.105626 -0.066799   
+4  0.703951  1.600035  1.262503 -0.388750 -0.171899 -0.105626 -0.079676   
+
+      power  kilometer  notRepairedDamage  ...       v_5       v_6       v_7  \
+0 -0.227020  -0.062821          -0.232539  ... -0.065283  0.299142 -0.049734   
+1 -0.395822  -0.053310           0.000000  ...  0.258353  0.441721 -0.043089   
+2  0.062756  -0.062821          -0.232539  ...  0.109697  0.396048 -0.011474   
+3  0.147157  -0.053310          -0.232539  ...  0.364179  0.361465 -0.057885   
+4 -0.204513  -0.091354          -0.232539  ... -0.150251  0.083322 -0.090217   
+
+        v_8       v_9      v_10      v_11      v_12      v_13      v_14  
+0 -0.131639 -0.141617 -0.720934  1.620970 -1.032394  0.610606  0.862376  
+1 -0.129301 -0.188182 -1.261222  1.268456 -0.418342 -1.376912  0.226001  
+2 -0.107303 -0.184249 -1.246841  1.122631  0.728116 -0.674415 -0.226134  
+3 -0.125098 -0.200648 -1.156604  0.864820 -0.184876 -1.941822 -0.462656  
+4 -0.097010 -0.127036 -0.457153  0.677966  0.448008  2.220238  1.821559  
+
+[5 rows x 29 columns]
+</code></pre>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#划分训练集和测试集</span></span><br><span class="line">n_train = train_data.shape[<span class="number">0</span>]</span><br><span class="line">train_features = torch.tensor(all_features[:n_train].values, dtype=torch.float32)</span><br><span class="line">test_features = torch.tensor(all_features[n_train:].values, dtype=torch.float32)</span><br><span class="line">train_labels = torch.tensor(</span><br><span class="line">    train_data.price.values.reshape(-<span class="number">1</span>, <span class="number">1</span>), dtype=torch.float32)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#设置模型超参数</span></span><br><span class="line">loss = nn.MSELoss()</span><br><span class="line">in_features = train_features.shape[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_net</span>():</span><br><span class="line">    net = nn.Sequential(nn.Linear(in_features,<span class="number">1</span>))</span><br><span class="line">    <span class="keyword">return</span> net</span><br></pre></td></tr></table></figure>
+
+<p>用均方根误差来衡量差异</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">log_rmse</span>(<span class="params">net, features, labels</span>):</span><br><span class="line">    <span class="comment"># 为了在取对数时进一步稳定该值，将小于1的值设置为1</span></span><br><span class="line">    clipped_preds = torch.clamp(net(features), <span class="number">1</span>, <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>))</span><br><span class="line">    rmse = torch.sqrt(loss(torch.log(clipped_preds),</span><br><span class="line">                           torch.log(labels)))</span><br><span class="line">    <span class="keyword">return</span> rmse.item()</span><br></pre></td></tr></table></figure>
+
+<p>用adam优化器实现小批量随机梯度下降</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">net, train_features, train_labels, test_features, test_labels,</span></span><br><span class="line"><span class="params">          num_epochs, learning_rate, weight_decay, batch_size</span>):</span><br><span class="line">    train_ls, test_ls = [], []</span><br><span class="line">    train_iter = d2l.load_array((train_features, train_labels), batch_size)</span><br><span class="line">    <span class="comment"># 这里使用的是Adam优化算法</span></span><br><span class="line">    optimizer = torch.optim.Adam(net.parameters(),</span><br><span class="line">                                 lr = learning_rate,</span><br><span class="line">                                 weight_decay = weight_decay)</span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">        <span class="keyword">for</span> X, y <span class="keyword">in</span> train_iter:</span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            l = loss(net(X), y)</span><br><span class="line">            l.backward()</span><br><span class="line">            optimizer.step()</span><br><span class="line">        train_ls.append(log_rmse(net, train_features, train_labels))</span><br><span class="line">        <span class="keyword">if</span> test_labels <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            test_ls.append(log_rmse(net, test_features, test_labels))</span><br><span class="line">    <span class="keyword">return</span> train_ls, test_ls</span><br></pre></td></tr></table></figure>
+
+<p>将训练集划分为k折需要的数据:一份验证集,k-1份训练集</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_k_fold_data</span>(<span class="params">k, i, X, y</span>):</span><br><span class="line">    <span class="keyword">assert</span> k &gt; <span class="number">1</span></span><br><span class="line">    fold_size = X.shape[<span class="number">0</span>] // k</span><br><span class="line">    X_train, y_train = <span class="literal">None</span>, <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">        idx = <span class="built_in">slice</span>(j * fold_size, (j + <span class="number">1</span>) * fold_size)</span><br><span class="line">        X_part, y_part = X[idx, :], y[idx]</span><br><span class="line">        <span class="keyword">if</span> j == i:</span><br><span class="line">            X_valid, y_valid = X_part, y_part</span><br><span class="line">        <span class="keyword">elif</span> X_train <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            X_train, y_train = X_part, y_part</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            X_train = torch.cat([X_train, X_part], <span class="number">0</span>)</span><br><span class="line">            y_train = torch.cat([y_train, y_part], <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> X_train, y_train, X_valid, y_valid</span><br></pre></td></tr></table></figure>
+
+<p>k折交叉验证训练代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">k_fold</span>(<span class="params">k, X_train, y_train, num_epochs, learning_rate, weight_decay,</span></span><br><span class="line"><span class="params">           batch_size</span>):</span><br><span class="line">    train_l_sum, valid_l_sum = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">        data = get_k_fold_data(k, i, X_train, y_train)</span><br><span class="line">        net = get_net()</span><br><span class="line">        train_ls, valid_ls = train(net, *data, num_epochs, learning_rate,</span><br><span class="line">                                   weight_decay, batch_size)</span><br><span class="line">        train_l_sum += train_ls[-<span class="number">1</span>]</span><br><span class="line">        valid_l_sum += valid_ls[-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">            d2l.plot(<span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">1</span>, num_epochs + <span class="number">1</span>)), [train_ls, valid_ls],</span><br><span class="line">                     xlabel=<span class="string">&#x27;epoch&#x27;</span>, ylabel=<span class="string">&#x27;rmse&#x27;</span>, xlim=[<span class="number">1</span>, num_epochs],</span><br><span class="line">                     legend=[<span class="string">&#x27;train&#x27;</span>, <span class="string">&#x27;valid&#x27;</span>], yscale=<span class="string">&#x27;log&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;折<span class="subst">&#123;i + <span class="number">1</span>&#125;</span>，训练log rmse:<span class="subst">&#123;<span class="built_in">float</span>(train_ls[-<span class="number">1</span>]):f&#125;</span>, &#x27;</span></span><br><span class="line">              <span class="string">f&#x27;验证log rmse:<span class="subst">&#123;<span class="built_in">float</span>(valid_ls[-<span class="number">1</span>]):f&#125;</span>&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> train_l_sum / k, valid_l_sum / k</span><br></pre></td></tr></table></figure>
+
+<p>设置训练超参数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">k, num_epochs, lr, weight_decay, batch_size = <span class="number">5</span> ,<span class="number">100</span> , <span class="number">2</span>, <span class="number">0.1</span>, <span class="number">64</span></span><br></pre></td></tr></table></figure>
+
+<p>进行训练,训练时调参,找到最优的参数用来后面拿到完整的训练集上进行训练</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">k, num_epochs, lr, weight_decay, batch_size = <span class="number">5</span>,<span class="number">100</span>, <span class="number">5</span>, <span class="number">0.1</span>, <span class="number">64</span></span><br><span class="line">train_l, valid_l = k_fold(k, train_features, train_labels, num_epochs, lr,</span><br><span class="line">                          weight_decay, batch_size)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;k&#125;</span>-折验证: 平均训练log rmse: <span class="subst">&#123;<span class="built_in">float</span>(train_l):f&#125;</span>, &#x27;</span></span><br><span class="line">      <span class="string">f&#x27;平均验证log rmse: <span class="subst">&#123;<span class="built_in">float</span>(valid_l):f&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>折1，训练log rmse:2.859440, 验证log rmse:2.838621
+折2，训练log rmse:2.829567, 验证log rmse:2.825060
+折3，训练log rmse:2.786797, 验证log rmse:2.801329
+折4，训练log rmse:2.848498, 验证log rmse:2.866435
+折5，训练log rmse:2.880568, 验证log rmse:2.871375
+5-折验证: 平均训练log rmse: 2.840974, 平均验证log rmse: 2.840564
+</code></pre>
+<p><img src="/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/output_36_1.svg" alt="svg"></p>
+<p>​    </p>
+<p>不使用k折交叉验证时的训练模型</p>
+<p>当测试集上的预测与k折交叉验证的预测相似时就可以将生成的csv文件上传到竞赛</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train_and_pred</span>(<span class="params">train_features, test_features, train_labels, test_data,</span></span><br><span class="line"><span class="params">                   num_epochs, lr, weight_decay, batch_size</span>):</span><br><span class="line">    net = get_net()</span><br><span class="line">    train_ls, _ = train(net, train_features, train_labels, <span class="literal">None</span>, <span class="literal">None</span>,</span><br><span class="line">                        num_epochs, lr, weight_decay, batch_size)</span><br><span class="line">    d2l.plot(np.arange(<span class="number">1</span>, num_epochs + <span class="number">1</span>), [train_ls], xlabel=<span class="string">&#x27;epoch&#x27;</span>,</span><br><span class="line">             ylabel=<span class="string">&#x27;log rmse&#x27;</span>, xlim=[<span class="number">1</span>, num_epochs], yscale=<span class="string">&#x27;log&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;训练log rmse：<span class="subst">&#123;<span class="built_in">float</span>(train_ls[-<span class="number">1</span>]):f&#125;</span>&#x27;</span>)</span><br><span class="line">    <span class="comment"># 将网络应用于测试集。</span></span><br><span class="line">    preds = net(test_features).detach().numpy()</span><br><span class="line">    <span class="comment"># 将其重新格式化以导出到Kaggle</span></span><br><span class="line">    test_data[<span class="string">&#x27;price&#x27;</span>] = pd.Series(preds.reshape(<span class="number">1</span>, -<span class="number">1</span>)[<span class="number">0</span>])</span><br><span class="line">    submission = pd.concat([test_data[<span class="string">&#x27;SaleID&#x27;</span>], test_data[<span class="string">&#x27;price&#x27;</span>]], axis=<span class="number">1</span>)</span><br><span class="line">    submission.to_csv(<span class="string">&#x27;submission.csv&#x27;</span>, index=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train_and_pred(train_features, test_features, train_labels, test_data,</span><br><span class="line">               num_epochs, lr, weight_decay, batch_size)</span><br></pre></td></tr></table></figure>
+
+<pre><code>训练log rmse：2.835125
+</code></pre>
+<p><img src="/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/output_39_1.svg" alt="svg"></p>
+<p>​    </p>
+<p>线性模型分析:线性模型对于二手车交易价格预测这个项目明显不合适,数据量有两万条,过大,而模型过于简单,loss经过调参最低也有2.8左右,明显欠拟合.</p>
 ]]></content>
       <categories>
         <category>动手学深度学习</category>
