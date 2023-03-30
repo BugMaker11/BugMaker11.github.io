@@ -1,0 +1,2168 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="深度学习笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文为DataWhale 3月动手学深度学习二手车交易价格预测多层感知机模型的笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动手学深度学习-二手车交易价格预测-多层感知机">
+<meta property="og:url" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/index.html">
+<meta property="og:site_name" content="miandui">
+<meta property="og:description" content="本文为DataWhale 3月动手学深度学习二手车交易价格预测多层感知机模型的笔记">
+<meta property="og:locale">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_24_3.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_24_4.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_26_0.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_27_0.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_33_1.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_36_1.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_38_1.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_51_1.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_69_1.svg">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_71_1.svg">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/image-20230330160727999.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/image-20230330162512647.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/image-20230330164508079.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/image-20230330165340646.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/image-20230330170509650.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/image-20230330171219491.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/image-20230330172530787.png">
+<meta property="og:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/image-20230330175100356.png">
+<meta property="article:published_time" content="2023-03-30T07:41:41.000Z">
+<meta property="article:modified_time" content="2023-03-30T10:40:32.153Z">
+<meta property="article:author" content="miandui">
+<meta property="article:tag" content="深度学习笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_24_3.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://bugmaker11.github.io/2023/03/30/动手学深度学习-二手车交易价格预测-多层感知机/"/>
+
+
+
+
+
+  <title>动手学深度学习-二手车交易价格预测-多层感知机 | miandui</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">miandui</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://bugmaker11.github.io/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar2.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="miandui">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">动手学深度学习-二手车交易价格预测-多层感知机</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-03-30T15:41:41+08:00">
+                2023-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">动手学深度学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  28
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  本文为DataWhale 3月动手学深度学习二手车交易价格预测多层感知机模型的笔记
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="二手车交易价格预测-多层感知机"><a href="#二手车交易价格预测-多层感知机" class="headerlink" title="二手车交易价格预测-多层感知机"></a>二手车交易价格预测-多层感知机</h1><p>前面数据的导入与线性模型相同,数据处理经过启发应该筛选掉相关性不强的列,在这里进行调整</p>
+<h2 id="一-导包"><a href="#一-导包" class="headerlink" title="一.导包"></a>一.导包</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.environ[<span class="string">&#x27;KMP_DUPLICATE_LIB_OK&#x27;</span>]=<span class="string">&#x27;True&#x27;</span></span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> tarfile</span><br><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure>
+
+<h2 id="二-下载数据"><a href="#二-下载数据" class="headerlink" title="二.下载数据"></a>二.下载数据</h2><p>这里只演示从本地导入数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train_data = pd.read_csv(<span class="string">&#x27;F://d2l-zh/pytorch/data/used_car_train_20200313.csv&#x27;</span> )</span><br><span class="line">test_data = pd.read_csv(<span class="string">&#x27;F://d2l-zh/pytorch/data/used_car_testB_20200421.csv&#x27;</span> )</span><br></pre></td></tr></table></figure>
+
+<h2 id="三-处理数据"><a href="#三-处理数据" class="headerlink" title="三.处理数据"></a>三.处理数据</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#一些废弃的代码</span><br><span class="line">#将dtype=object 的数值更改为数值型数据,否则这些数据会被当作字符串处理</span><br><span class="line"></span><br><span class="line">#例子df_valid[&quot;val&quot;] = pd.to_numeric(df_valid[&quot;val&quot;],errors=&#x27;coerce&#x27;)</span><br><span class="line"></span><br><span class="line">train_data[&quot;gearbox&quot;] = pd.to_numeric(train_data[&quot;gearbox&quot;],errors=&#x27;coerce&#x27;)</span><br><span class="line">train_data[&quot;power&quot;] = pd.to_numeric(train_data[&quot;power&quot;],errors=&#x27;coerce&#x27;)</span><br><span class="line">train_data[&quot;kilometer&quot;] = pd.to_numeric(train_data[&quot;kilometer&quot;],errors=&#x27;coerce&#x27;)</span><br><span class="line">train_data[&quot;notRepairedDamage&quot;] = pd.to_numeric(train_data[&quot;notRepairedDamage&quot;],errors=&#x27;coerce&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>展示数据的shape</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(train_data.shape)</span><br><span class="line"><span class="built_in">print</span>(test_data.shape)</span><br></pre></td></tr></table></figure>
+
+<pre><code>(150000, 31)
+(50000, 30)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#删除掉会使log()变成nan的行</span></span><br><span class="line"><span class="comment">#例子:df.drop(df[(df.score &lt; 50) &amp; (df.score &gt; 20)].index， inplace=True)</span></span><br><span class="line">train_data.drop(train_data[(train_data.price &lt; <span class="number">1</span>)].index, inplace=<span class="literal">True</span>) </span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将去掉id和y的训练集,测试集数据连在一起,方便以后使用</span></span><br><span class="line">all_features = pd.concat( (train_data.drop([<span class="string">&#x27;SaleID&#x27;</span>, <span class="string">&#x27;price&#x27;</span>], axis=<span class="number">1</span>), test_data.drop([<span class="string">&#x27;SaleID&#x27;</span>], axis=<span class="number">1</span>)))</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(all_features.shape)</span><br></pre></td></tr></table></figure>
+
+<pre><code>(198397, 29)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_features.info()</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 198397 entries, 0 to 49999
+Data columns (total 29 columns):
+ #   Column             Non-Null Count   Dtype  
+---  ------             --------------   -----  
+ 0   name               198397 non-null  int64  
+ 1   regDate            198397 non-null  int64  
+ 2   model              198397 non-null  int64  
+ 3   brand              198397 non-null  int64  
+ 4   bodyType           198397 non-null  int64  
+ 5   fuelType           198397 non-null  float64
+ 6   gearbox            198397 non-null  object 
+ 7   power              198397 non-null  object 
+ 8   kilometer          198397 non-null  object 
+ 9   notRepairedDamage  198397 non-null  object 
+ 10  regionCode         198397 non-null  int64  
+ 11  seller             198397 non-null  float64
+ 12  offerType          198397 non-null  float64
+ 13  creatDate          198397 non-null  float64
+ 14  v_0                198397 non-null  float64
+ 15  v_1                198397 non-null  float64
+ 16  v_2                198397 non-null  float64
+ 17  v_3                198397 non-null  float64
+ 18  v_4                198397 non-null  float64
+ 19  v_5                198397 non-null  float64
+ 20  v_6                198397 non-null  float64
+ 21  v_7                198397 non-null  float64
+ 22  v_8                198397 non-null  float64
+ 23  v_9                198397 non-null  float64
+ 24  v_10               198397 non-null  float64
+ 25  v_11               198397 non-null  float64
+ 26  v_12               196435 non-null  float64
+ 27  v_13               195188 non-null  float64
+ 28  v_14               181210 non-null  float64
+dtypes: float64(19), int64(6), object(4)
+memory usage: 45.4+ MB
+</code></pre>
+<p>将所有 ‘ - ‘ 都替换为nan</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_features.replace(<span class="string">&#x27;-&#x27;</span>, np.nan, inplace=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>查看替换效果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_features[<span class="string">&#x27;notRepairedDamage&#x27;</span>].value_counts()</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>0       144307
+1        16755
+486         76
+70          73
+1530        63
+         ...  
+1766         1
+7569         1
+6533         1
+5213         1
+5158         1
+Name: notRepairedDamage, Length: 4790, dtype: int64
+</code></pre>
+<p>去掉倾斜特别严重的列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_features[<span class="string">&quot;seller&quot;</span>].value_counts()</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>0.000000       195187
+300.000000         61
+1000.000000        61
+100.000000         57
+500.000000         54
+                ...  
+866.000000          1
+35.520548           1
+33.721656           1
+35.211289           1
+33.552816           1
+Name: seller, Length: 814, dtype: int64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_features[<span class="string">&quot;offerType&quot;</span>].value_counts()</span><br></pre></td></tr></table></figure>
+
+
+<pre><code> 0.000000e+00    181210
+ 2.016031e+07       565
+ 2.016031e+07       537
+ 2.016032e+07       528
+ 2.016031e+07       526
+                  ...  
+ 4.279370e+01         1
+-3.688516e+00         1
+ 3.545805e+01         1
+-3.705080e+00         1
+-3.697117e+00         1
+Name: offerType, Length: 2896, dtype: int64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">del</span> all_features[<span class="string">&quot;seller&quot;</span>]</span><br><span class="line"><span class="keyword">del</span> all_features[<span class="string">&quot;offerType&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+<p>了解预测值的分布</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train_data[<span class="string">&#x27;price&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>0         1850.0
+1         3600.0
+2         6222.0
+3         2400.0
+4         5200.0
+           ...  
+149995    5900.0
+149996    9500.0
+149997    7500.0
+149998    4999.0
+149999    4700.0
+Name: price, Length: 148397, dtype: float64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 1) 总体分布概况（无界约翰逊分布等）</span></span><br><span class="line"><span class="keyword">import</span> scipy.stats <span class="keyword">as</span> st</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="comment">#train_features_2 = all_features[:n_train].values</span></span><br><span class="line"><span class="comment">#train_distribution = train_features_2.insert(loc=-1,column=&#x27;price&#x27;, value=train_data.price.values.reshape(-1, 1))</span></span><br><span class="line"><span class="comment">#np.insert(a,0,b,axis=1)</span></span><br><span class="line"><span class="comment">#np.insert(train_features_2,-1,train_data.price.values,axis=1)</span></span><br><span class="line"><span class="comment">#np.insert(train_features_2,0,train_data.SaleID.values,axis=1)</span></span><br><span class="line">y = train_data[<span class="string">&#x27;price&#x27;</span>]</span><br><span class="line">plt.figure(<span class="number">1</span>); plt.title(<span class="string">&#x27;Johnson SU&#x27;</span>)</span><br><span class="line">sns.distplot(y, kde=<span class="literal">False</span>, fit=st.johnsonsu)</span><br><span class="line">plt.figure(<span class="number">2</span>); plt.title(<span class="string">&#x27;Normal&#x27;</span>)</span><br><span class="line">sns.distplot(y, kde=<span class="literal">False</span>, fit=st.norm)</span><br><span class="line">plt.figure(<span class="number">3</span>); plt.title(<span class="string">&#x27;Log Normal&#x27;</span>)</span><br><span class="line">sns.distplot(y, kde=<span class="literal">False</span>, fit=st.lognorm)</span><br><span class="line">![png](output_24_2.png)</span><br></pre></td></tr></table></figure>
+
+
+
+<img src="output_24_3.png" alt="png" style="zoom:50%;" />
+
+<p>​    </p>
+<img src="output_24_4.png" alt="png" style="zoom:50%;" />
+
+<p>​    </p>
+<p>查看price的分布</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 3) 查看预测值的具体频数</span></span><br><span class="line">plt.hist(train_data[<span class="string">&#x27;price&#x27;</span>], orientation = <span class="string">&#x27;vertical&#x27;</span>,histtype = <span class="string">&#x27;bar&#x27;</span>, color =<span class="string">&#x27;red&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<img src="output_26_0.png" alt="png" style="zoom:50%;" />
+
+<p>​    </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># log变换 z之后的分布较均匀，可以进行log变换进行预测，这也是预测问题常用的trick</span></span><br><span class="line">plt.hist(np.log(train_data[<span class="string">&#x27;price&#x27;</span>]), orientation = <span class="string">&#x27;vertical&#x27;</span>,histtype = <span class="string">&#x27;bar&#x27;</span>, color =<span class="string">&#x27;red&#x27;</span>) </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<img src="output_27_0.png" alt="png" style="zoom:50%;" />
+
+<p>​    </p>
+<p>所以可以把price取log,等预测完后再补回来(最后并没有取log)</p>
+<p>相关性分析</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">numeric_features = [<span class="string">&#x27;power&#x27;</span>, <span class="string">&#x27;kilometer&#x27;</span>, <span class="string">&#x27;v_0&#x27;</span>, <span class="string">&#x27;v_1&#x27;</span>, <span class="string">&#x27;v_2&#x27;</span>, <span class="string">&#x27;v_3&#x27;</span>, <span class="string">&#x27;v_4&#x27;</span>, <span class="string">&#x27;v_5&#x27;</span>, <span class="string">&#x27;v_6&#x27;</span>, <span class="string">&#x27;v_7&#x27;</span>, <span class="string">&#x27;v_8&#x27;</span>, <span class="string">&#x27;v_9&#x27;</span>, <span class="string">&#x27;v_10&#x27;</span>, <span class="string">&#x27;v_11&#x27;</span>, <span class="string">&#x27;v_12&#x27;</span>, <span class="string">&#x27;v_13&#x27;</span>,<span class="string">&#x27;v_14&#x27;</span> ]</span><br><span class="line"></span><br><span class="line">categorical_features = [<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;model&#x27;</span>, <span class="string">&#x27;brand&#x27;</span>, <span class="string">&#x27;bodyType&#x27;</span>, <span class="string">&#x27;fuelType&#x27;</span>, <span class="string">&#x27;gearbox&#x27;</span>, <span class="string">&#x27;notRepairedDamage&#x27;</span>, <span class="string">&#x27;regionCode&#x27;</span>,]</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numeric_features.append(<span class="string">&#x27;price&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 1) 相关性分析</span></span><br><span class="line">price_numeric = train_data[numeric_features]</span><br><span class="line">correlation = price_numeric.corr()</span><br><span class="line"><span class="built_in">print</span>(correlation[<span class="string">&#x27;price&#x27;</span>].sort_values(ascending = <span class="literal">False</span>),<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>price    1.000000
+v_12     0.757191
+v_2      0.339706
+v_0      0.331059
+v_5      0.210128
+v_14     0.027706
+v_1      0.017711
+v_13    -0.020419
+v_8     -0.063720
+v_7     -0.065614
+v_6     -0.066145
+v_9     -0.124748
+v_4     -0.158719
+v_10    -0.235059
+v_11    -0.337444
+v_3     -0.712686
+Name: price, dtype: float64 
+</code></pre>
+<p>​    </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f , ax = plt.subplots(figsize = (<span class="number">7</span>, <span class="number">7</span>))</span><br><span class="line"></span><br><span class="line">plt.title(<span class="string">&#x27;Correlation of Numeric Features with Price&#x27;</span>,y=<span class="number">1</span>,size=<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line">sns.heatmap(correlation,square = <span class="literal">True</span>,  vmax=<span class="number">0.8</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="output_33_1.png" alt="png" style="zoom:50%;" />
+
+<p>​    </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">del</span> price_numeric[<span class="string">&#x27;price&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 2) 查看几个特征得 偏度和峰值</span></span><br><span class="line"><span class="keyword">for</span> col <span class="keyword">in</span> numeric_features:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&#123;:15&#125;&#x27;</span>.<span class="built_in">format</span>(col), </span><br><span class="line">          <span class="string">&#x27;Skewness: &#123;:05.2f&#125;&#x27;</span>.<span class="built_in">format</span>(all_features[col].skew()) , </span><br><span class="line">          <span class="string">&#x27;   &#x27;</span> ,</span><br><span class="line">          <span class="string">&#x27;Kurtosis: &#123;:06.2f&#125;&#x27;</span>.<span class="built_in">format</span>(all_features[col].kurt())  </span><br><span class="line">         )</span><br></pre></td></tr></table></figure>
+
+<pre><code>power           Skewness: 17.52     Kurtosis: 456.05
+kilometer       Skewness: 18.52     Kurtosis: 382.51
+v_0             Skewness: -2.89     Kurtosis: 006.69
+v_1             Skewness: 00.88     Kurtosis: 000.90
+v_2             Skewness: 00.93     Kurtosis: 003.43
+v_3             Skewness: 00.05     Kurtosis: -00.45
+v_4             Skewness: 00.32     Kurtosis: -00.05
+v_5             Skewness: 04.30     Kurtosis: 060.73
+v_6             Skewness: 07.39     Kurtosis: 062.89
+v_7             Skewness: 10.68     Kurtosis: 114.42
+v_8             Skewness: 09.01     Kurtosis: 083.07
+v_9             Skewness: 05.79     Kurtosis: 047.44
+v_10            Skewness: 00.45     Kurtosis: 001.47
+v_11            Skewness: 00.32     Kurtosis: 000.73
+v_12            Skewness: 00.09     Kurtosis: -00.47
+v_13            Skewness: 00.22     Kurtosis: -00.36
+v_14            Skewness: -1.21     Kurtosis: 002.36
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 3) 每个数字特征得分布可视化</span></span><br><span class="line">f = pd.melt(all_features, value_vars=numeric_features)</span><br><span class="line">g = sns.FacetGrid(f, col=<span class="string">&quot;variable&quot;</span>,  col_wrap=<span class="number">2</span>, sharex=<span class="literal">False</span>, sharey=<span class="literal">False</span>)</span><br><span class="line">g = g.<span class="built_in">map</span>(sns.distplot, <span class="string">&quot;value&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="output_36_1.png" alt="png" style="zoom:80%;" />
+
+<p>​    </p>
+<p>查看匿名特征的分布</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 4) 数字特征相互之间的关系可视化</span></span><br><span class="line">sns.<span class="built_in">set</span>()</span><br><span class="line">columns = [<span class="string">&#x27;price&#x27;</span>, <span class="string">&#x27;v_12&#x27;</span>, <span class="string">&#x27;v_8&#x27;</span> , <span class="string">&#x27;v_0&#x27;</span>, <span class="string">&#x27;power&#x27;</span>, <span class="string">&#x27;v_5&#x27;</span>,  <span class="string">&#x27;v_2&#x27;</span>, <span class="string">&#x27;v_6&#x27;</span>, <span class="string">&#x27;v_1&#x27;</span>, <span class="string">&#x27;v_14&#x27;</span>]</span><br><span class="line">sns.pairplot(train_data[columns],height = <span class="number">2</span> ,kind =<span class="string">&#x27;scatter&#x27;</span>,diag_kind=<span class="string">&#x27;kde&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_38_1.png" alt="png"></p>
+<p>用pandas_profiling生成一个较为全面的可视化和数据报告</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pandas_profiling</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas_profiling</span><br><span class="line">pfr = pandas_profiling.ProfileReport(train_data)</span><br><span class="line">pfr.to_file(<span class="string">&quot;./example.html&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将dtype=object 的数值更改为数值型数据,否则这些数据会被当作字符串处理</span></span><br><span class="line"><span class="comment">#例子df_valid[&quot;val&quot;] = pd.to_numeric(df_valid[&quot;val&quot;],errors=&#x27;coerce&#x27;)</span></span><br><span class="line">all_features[<span class="string">&quot;gearbox&quot;</span>] = pd.to_numeric(all_features[<span class="string">&quot;gearbox&quot;</span>],errors=<span class="string">&#x27;coerce&#x27;</span>)</span><br><span class="line">all_features[<span class="string">&quot;power&quot;</span>] = pd.to_numeric(all_features[<span class="string">&quot;power&quot;</span>],errors=<span class="string">&#x27;coerce&#x27;</span>)</span><br><span class="line">all_features[<span class="string">&quot;kilometer&quot;</span>] = pd.to_numeric(all_features[<span class="string">&quot;kilometer&quot;</span>],errors=<span class="string">&#x27;coerce&#x27;</span>)</span><br><span class="line">all_features[<span class="string">&quot;notRepairedDamage&quot;</span>] = pd.to_numeric(all_features[<span class="string">&quot;notRepairedDamage&quot;</span>],errors=<span class="string">&#x27;coerce&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#连续特征异常值简单处理</span></span><br><span class="line"><span class="comment">#df.loc[df[&#x27;power&#x27;]&gt;600,&#x27;power&#x27;] = 600</span></span><br><span class="line">all_features.loc[all_features[<span class="string">&#x27;power&#x27;</span>]&gt;<span class="number">600</span>,<span class="string">&#x27;power&#x27;</span>] = <span class="number">600</span></span><br><span class="line"><span class="comment">#车身类型bodyType&gt;7的设置为缺失?</span></span><br><span class="line">all_features.loc[all_features[<span class="string">&#x27;bodyType&#x27;</span>]&gt;<span class="number">7</span>,<span class="string">&#x27;bodyType&#x27;</span>] = np.nan</span><br><span class="line"><span class="comment">#燃油类型fuelType&gt;6的行设置为缺失?</span></span><br><span class="line">all_features.loc[all_features[<span class="string">&#x27;fuelType&#x27;</span>]&gt;<span class="number">6</span>,<span class="string">&#x27;fuelType&#x27;</span>] = np.nan</span><br><span class="line"><span class="comment">#gearbox&gt;1的设置为缺失</span></span><br><span class="line">all_features.loc[all_features[<span class="string">&#x27;gearbox&#x27;</span>]&gt;<span class="number">1</span>,<span class="string">&#x27;gearbox&#x27;</span>] = np.nan</span><br><span class="line"><span class="comment">#notRepairedDamage&gt;1的设置为缺失</span></span><br><span class="line">all_features.loc[all_features[<span class="string">&#x27;notRepairedDamage&#x27;</span>]&gt;<span class="number">1</span>,<span class="string">&#x27;notRepairedDamage&#x27;</span>] = np.nan</span><br><span class="line"><span class="comment">#seller&gt;1的设置为缺失   //已经被删掉了</span></span><br><span class="line"><span class="comment">#all_features.loc[all_features[&#x27;seller&#x27;]&gt;1,&#x27;seller&#x27;] = np.nan</span></span><br><span class="line"><span class="comment">#offerType&gt;1的设置为缺失  //已经被删掉了</span></span><br><span class="line"><span class="comment">#all_features.loc[all_features[&#x27;offerType&#x27;]&gt;1,&#x27;offerType&#x27;] = np.nan</span></span><br><span class="line"><span class="comment">#creatDate&lt;20150807的值设置为缺失</span></span><br><span class="line">all_features.loc[all_features[<span class="string">&#x27;creatDate&#x27;</span>]&lt;<span class="number">20150807</span>,<span class="string">&#x27;creatDate&#x27;</span>] = np.nan</span><br></pre></td></tr></table></figure>
+
+
+
+<p>删掉和price相关性不大的列:v_5,v_14,v_1,v_13,v_8,v_7,v_6,v_9,v_4,v_10</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">all_features.drop(<span class="string">&#x27;v_5&#x27;</span>, axis=<span class="number">1</span>)</span><br><span class="line">all_features.drop(<span class="string">&#x27;v_14&#x27;</span>, axis=<span class="number">1</span>)</span><br><span class="line">all_features.drop(<span class="string">&#x27;v_1&#x27;</span>, axis=<span class="number">1</span>)</span><br><span class="line">all_features.drop(<span class="string">&#x27;v_13&#x27;</span>, axis=<span class="number">1</span>)</span><br><span class="line">all_features.drop(<span class="string">&#x27;v_8&#x27;</span>, axis=<span class="number">1</span>)</span><br><span class="line">all_features.drop(<span class="string">&#x27;v_7&#x27;</span>, axis=<span class="number">1</span>)</span><br><span class="line">all_features.drop(<span class="string">&#x27;v_6&#x27;</span>, axis=<span class="number">1</span>)</span><br><span class="line">all_features.drop(<span class="string">&#x27;v_9&#x27;</span>, axis=<span class="number">1</span>)</span><br><span class="line">all_features.drop(<span class="string">&#x27;v_4&#x27;</span>, axis=<span class="number">1</span>)</span><br><span class="line">all_features.drop(<span class="string">&#x27;v_10&#x27;</span>, axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>regDate</th>
+      <th>model</th>
+      <th>brand</th>
+      <th>bodyType</th>
+      <th>fuelType</th>
+      <th>gearbox</th>
+      <th>power</th>
+      <th>kilometer</th>
+      <th>notRepairedDamage</th>
+      <th>...</th>
+      <th>v_4</th>
+      <th>v_5</th>
+      <th>v_6</th>
+      <th>v_7</th>
+      <th>v_8</th>
+      <th>v_9</th>
+      <th>v_11</th>
+      <th>v_12</th>
+      <th>v_13</th>
+      <th>v_14</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-1.103673</td>
+      <td>0.113972</td>
+      <td>-0.349400</td>
+      <td>-0.261700</td>
+      <td>-0.428617</td>
+      <td>-0.668947</td>
+      <td>-0.537451</td>
+      <td>-0.689842</td>
+      <td>-0.062821</td>
+      <td>-0.340743</td>
+      <td>...</td>
+      <td>0.957081</td>
+      <td>-0.065283</td>
+      <td>0.299142</td>
+      <td>-0.049734</td>
+      <td>-0.131639</td>
+      <td>-0.141617</td>
+      <td>1.620970</td>
+      <td>-1.032394</td>
+      <td>0.610606</td>
+      <td>0.862376</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-1.078674</td>
+      <td>-0.074366</td>
+      <td>-0.147912</td>
+      <td>-0.896951</td>
+      <td>0.139896</td>
+      <td>-0.668947</td>
+      <td>-0.537451</td>
+      <td>-1.402302</td>
+      <td>-0.053310</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>-1.271041</td>
+      <td>0.258353</td>
+      <td>0.441721</td>
+      <td>-0.043089</td>
+      <td>-0.129301</td>
+      <td>-0.188182</td>
+      <td>1.268456</td>
+      <td>-0.418342</td>
+      <td>-1.376912</td>
+      <td>0.226001</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-0.872068</td>
+      <td>0.113991</td>
+      <td>1.363247</td>
+      <td>0.881754</td>
+      <td>-0.428617</td>
+      <td>-0.668947</td>
+      <td>-0.537451</td>
+      <td>0.533214</td>
+      <td>-0.062821</td>
+      <td>-0.340743</td>
+      <td>...</td>
+      <td>-0.901775</td>
+      <td>0.109697</td>
+      <td>0.396048</td>
+      <td>-0.011474</td>
+      <td>-0.107303</td>
+      <td>-0.184249</td>
+      <td>1.122631</td>
+      <td>0.728116</td>
+      <td>-0.674415</td>
+      <td>-0.226134</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.061542</td>
+      <td>-1.368231</td>
+      <td>1.242354</td>
+      <td>0.246502</td>
+      <td>-0.997130</td>
+      <td>-0.668947</td>
+      <td>1.861488</td>
+      <td>0.889444</td>
+      <td>-0.053310</td>
+      <td>-0.340743</td>
+      <td>...</td>
+      <td>-1.970849</td>
+      <td>0.364179</td>
+      <td>0.361465</td>
+      <td>-0.057885</td>
+      <td>-0.125098</td>
+      <td>-0.200648</td>
+      <td>0.864820</td>
+      <td>-0.184876</td>
+      <td>-1.941822</td>
+      <td>-0.462656</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.703951</td>
+      <td>1.600035</td>
+      <td>1.262503</td>
+      <td>-0.388750</td>
+      <td>-0.428617</td>
+      <td>-0.668947</td>
+      <td>-0.537451</td>
+      <td>-0.594848</td>
+      <td>-0.091354</td>
+      <td>-0.340743</td>
+      <td>...</td>
+      <td>1.914255</td>
+      <td>-0.150251</td>
+      <td>0.083322</td>
+      <td>-0.090217</td>
+      <td>-0.097010</td>
+      <td>-0.127036</td>
+      <td>0.677966</td>
+      <td>0.448008</td>
+      <td>2.220238</td>
+      <td>1.821559</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>49995</th>
+      <td>0.709898</td>
+      <td>0.125215</td>
+      <td>-0.873268</td>
+      <td>-0.515800</td>
+      <td>-0.997130</td>
+      <td>1.151507</td>
+      <td>0.000000</td>
+      <td>-1.224187</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.192838</td>
+      <td>-2.682987</td>
+      <td>0.597682</td>
+      <td>-0.106862</td>
+      <td>-0.121464</td>
+      <td>1.054890</td>
+      <td>1.079508</td>
+      <td>-0.432896</td>
+      <td>0.240641</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>49996</th>
+      <td>1.387954</td>
+      <td>1.792196</td>
+      <td>0.355808</td>
+      <td>-0.896951</td>
+      <td>-0.997130</td>
+      <td>-0.668947</td>
+      <td>-0.537451</td>
+      <td>0.723203</td>
+      <td>-0.095159</td>
+      <td>-0.340743</td>
+      <td>...</td>
+      <td>0.274264</td>
+      <td>0.153067</td>
+      <td>-0.458147</td>
+      <td>-0.021447</td>
+      <td>-0.078703</td>
+      <td>-0.159558</td>
+      <td>-1.414470</td>
+      <td>1.922566</td>
+      <td>0.093775</td>
+      <td>0.521442</td>
+    </tr>
+    <tr>
+      <th>49997</th>
+      <td>1.055356</td>
+      <td>0.129056</td>
+      <td>-0.873268</td>
+      <td>-0.515800</td>
+      <td>-0.997130</td>
+      <td>-0.668947</td>
+      <td>1.861488</td>
+      <td>0.343225</td>
+      <td>-0.062821</td>
+      <td>-0.340743</td>
+      <td>...</td>
+      <td>-0.632764</td>
+      <td>0.237846</td>
+      <td>-0.463196</td>
+      <td>-0.036490</td>
+      <td>-0.101246</td>
+      <td>-0.174625</td>
+      <td>-0.979948</td>
+      <td>0.642117</td>
+      <td>-0.864207</td>
+      <td>0.249849</td>
+    </tr>
+    <tr>
+      <th>49998</th>
+      <td>1.233490</td>
+      <td>-0.253344</td>
+      <td>-0.147912</td>
+      <td>-0.896951</td>
+      <td>1.276922</td>
+      <td>-0.668947</td>
+      <td>1.861488</td>
+      <td>0.687580</td>
+      <td>-0.053310</td>
+      <td>-0.340743</td>
+      <td>...</td>
+      <td>-1.638240</td>
+      <td>0.451069</td>
+      <td>-0.465405</td>
+      <td>-0.116438</td>
+      <td>-0.103993</td>
+      <td>-0.195194</td>
+      <td>-1.239622</td>
+      <td>0.288114</td>
+      <td>-1.373416</td>
+      <td>0.293378</td>
+    </tr>
+    <tr>
+      <th>49999</th>
+      <td>0.165353</td>
+      <td>1.051952</td>
+      <td>-0.309102</td>
+      <td>-0.007599</td>
+      <td>-0.428617</td>
+      <td>-0.668947</td>
+      <td>-0.537451</td>
+      <td>-1.402302</td>
+      <td>-0.098963</td>
+      <td>-0.340743</td>
+      <td>...</td>
+      <td>1.517869</td>
+      <td>-0.112291</td>
+      <td>0.313830</td>
+      <td>-0.085760</td>
+      <td>-0.107207</td>
+      <td>-0.133914</td>
+      <td>1.236599</td>
+      <td>0.084987</td>
+      <td>1.721624</td>
+      <td>0.798387</td>
+    </tr>
+  </tbody>
+</table>
+<p>198397 rows × 26 columns</p>
+</div>
+
+
+<p>熟悉数据的相关统计量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_features.describe()</span><br></pre></td></tr></table></figure>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>regDate</th>
+      <th>model</th>
+      <th>brand</th>
+      <th>bodyType</th>
+      <th>fuelType</th>
+      <th>gearbox</th>
+      <th>power</th>
+      <th>kilometer</th>
+      <th>notRepairedDamage</th>
+      <th>...</th>
+      <th>v_5</th>
+      <th>v_6</th>
+      <th>v_7</th>
+      <th>v_8</th>
+      <th>v_9</th>
+      <th>v_10</th>
+      <th>v_11</th>
+      <th>v_12</th>
+      <th>v_13</th>
+      <th>v_14</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>198397.000000</td>
+      <td>1.983970e+05</td>
+      <td>198397.000000</td>
+      <td>198397.000000</td>
+      <td>198176.000000</td>
+      <td>196294.000000</td>
+      <td>185871.000000</td>
+      <td>197710.000000</td>
+      <td>192823.000000</td>
+      <td>161062.000000</td>
+      <td>...</td>
+      <td>198397.000000</td>
+      <td>198397.000000</td>
+      <td>198397.000000</td>
+      <td>198397.000000</td>
+      <td>198397.000000</td>
+      <td>198397.000000</td>
+      <td>198397.000000</td>
+      <td>196435.000000</td>
+      <td>195188.000000</td>
+      <td>181210.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>68108.227544</td>
+      <td>2.003429e+07</td>
+      <td>47.340978</td>
+      <td>8.059809</td>
+      <td>1.753926</td>
+      <td>0.367462</td>
+      <td>0.224037</td>
+      <td>118.095248</td>
+      <td>29.012779</td>
+      <td>0.104028</td>
+      <td>...</td>
+      <td>0.241546</td>
+      <td>0.062093</td>
+      <td>0.175824</td>
+      <td>0.235704</td>
+      <td>0.331272</td>
+      <td>-0.188182</td>
+      <td>-0.450399</td>
+      <td>-0.083272</td>
+      <td>0.021721</td>
+      <td>0.007850</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>61043.662967</td>
+      <td>5.363231e+04</td>
+      <td>49.630792</td>
+      <td>7.870895</td>
+      <td>1.758975</td>
+      <td>0.549314</td>
+      <td>0.416851</td>
+      <td>84.215254</td>
+      <td>262.853174</td>
+      <td>0.305298</td>
+      <td>...</td>
+      <td>0.089920</td>
+      <td>0.133367</td>
+      <td>0.930455</td>
+      <td>1.617201</td>
+      <td>1.651006</td>
+      <td>3.736296</td>
+      <td>2.007745</td>
+      <td>2.264203</td>
+      <td>1.266889</td>
+      <td>1.051645</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.000000</td>
+      <td>1.991000e+07</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>-0.273510</td>
+      <td>-8.206004</td>
+      <td>-8.399672</td>
+      <td>-9.168192</td>
+      <td>-9.404106</td>
+      <td>-9.639552</td>
+      <td>-6.113291</td>
+      <td>-6.546556</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>11049.000000</td>
+      <td>1.999100e+07</td>
+      <td>11.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>71.000000</td>
+      <td>9.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.241090</td>
+      <td>0.000153</td>
+      <td>0.055976</td>
+      <td>0.035915</td>
+      <td>0.035213</td>
+      <td>-3.671179</td>
+      <td>-2.037674</td>
+      <td>-1.751599</td>
+      <td>-0.999469</td>
+      <td>-0.426465</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>51297.000000</td>
+      <td>2.003100e+07</td>
+      <td>30.000000</td>
+      <td>6.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>109.000000</td>
+      <td>15.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.256870</td>
+      <td>0.001192</td>
+      <td>0.090502</td>
+      <td>0.058192</td>
+      <td>0.063063</td>
+      <td>1.226635</td>
+      <td>-0.459030</td>
+      <td>-0.160096</td>
+      <td>0.006096</td>
+      <td>0.154983</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>118364.000000</td>
+      <td>2.007111e+07</td>
+      <td>66.000000</td>
+      <td>13.000000</td>
+      <td>3.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>150.000000</td>
+      <td>15.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.265062</td>
+      <td>0.104284</td>
+      <td>0.120882</td>
+      <td>0.081395</td>
+      <td>0.094180</td>
+      <td>2.678429</td>
+      <td>1.120382</td>
+      <td>1.584613</td>
+      <td>0.928545</td>
+      <td>0.702554</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>196812.000000</td>
+      <td>2.015121e+07</td>
+      <td>247.000000</td>
+      <td>39.000000</td>
+      <td>7.000000</td>
+      <td>6.000000</td>
+      <td>1.000000</td>
+      <td>600.000000</td>
+      <td>8086.000000</td>
+      <td>1.000000</td>
+      <td>...</td>
+      <td>1.411559</td>
+      <td>1.387847</td>
+      <td>12.357011</td>
+      <td>18.819042</td>
+      <td>18.801218</td>
+      <td>18.802072</td>
+      <td>13.562011</td>
+      <td>11.147669</td>
+      <td>8.658418</td>
+      <td>2.743993</td>
+    </tr>
+  </tbody>
+</table>
+<p>8 rows × 27 columns</p>
+</div>
+
+
+
+
+
+
+<p>判断数据缺失和异常</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">all_features.isnull().<span class="built_in">sum</span>()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code>name                 0
+regDate              0
+model                0
+brand                0
+bodyType             0
+fuelType             0
+gearbox              0
+power                0
+kilometer            0
+notRepairedDamage    0
+regionCode           0
+creatDate            0
+v_0                  0
+v_1                  0
+v_2                  0
+v_3                  0
+v_4                  0
+v_5                  0
+v_6                  0
+v_7                  0
+v_8                  0
+v_9                  0
+v_10                 0
+v_11                 0
+v_12                 0
+v_13                 0
+v_14                 0
+dtype: int64
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nan可视化</span></span><br><span class="line">missing = all_features.isnull().<span class="built_in">sum</span>()</span><br><span class="line">missing = missing[missing &gt; <span class="number">0</span>]</span><br><span class="line">missing.sort_values(inplace=<span class="literal">True</span>)</span><br><span class="line">missing.plot.bar()</span><br></pre></td></tr></table></figure>
+
+
+
+<img src="output_51_1.png" alt="png" style="zoom:50%;" />
+
+<p>​    </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找出所有的数值型数据,进行标准化</span></span><br><span class="line">numeric_features = all_features.dtypes[all_features.dtypes != <span class="string">&#x27;object&#x27;</span>].index</span><br><span class="line">all_features[numeric_features] = all_features[numeric_features].apply(</span><br><span class="line">    <span class="keyword">lambda</span> x: (x - x.mean()) / (x.std()))</span><br><span class="line"><span class="comment"># 在标准化数据之后，所有均值消失，因此我们可以将缺失值设置为0</span></span><br><span class="line">all_features[numeric_features] = all_features[numeric_features].fillna(<span class="number">0</span>)</span><br><span class="line"><span class="comment">#all_features = all_features.select_dtypes(exclude=[&#x27;float&#x27;, &#x27;int&#x27;]).fillna(0)</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(all_features[<span class="number">0</span>:<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
+
+<pre><code>       name   regDate     model     brand  bodyType  fuelType   gearbox  \
+0 -1.103673  0.113972 -0.349400 -0.261700 -0.428617 -0.668947 -0.537451   
+1 -1.078674 -0.074366 -0.147912 -0.896951  0.139896 -0.668947 -0.537451   
+2 -0.872068  0.113991  1.363247  0.881754 -0.428617 -0.668947 -0.537451   
+3  0.061542 -1.368231  1.242354  0.246502 -0.997130 -0.668947  1.861488   
+4  0.703951  1.600035  1.262503 -0.388750 -0.428617 -0.668947 -0.537451   
+
+      power  kilometer  notRepairedDamage  ...       v_5       v_6       v_7  \
+0 -0.689842  -0.062821          -0.340743  ... -0.065283  0.299142 -0.049734   
+1 -1.402302  -0.053310           0.000000  ...  0.258353  0.441721 -0.043089   
+2  0.533214  -0.062821          -0.340743  ...  0.109697  0.396048 -0.011474   
+3  0.889444  -0.053310          -0.340743  ...  0.364179  0.361465 -0.057885   
+4 -0.594848  -0.091354          -0.340743  ... -0.150251  0.083322 -0.090217   
+
+        v_8       v_9      v_10      v_11      v_12      v_13      v_14  
+0 -0.131639 -0.141617 -0.720934  1.620970 -1.032394  0.610606  0.862376  
+1 -0.129301 -0.188182 -1.261222  1.268456 -0.418342 -1.376912  0.226001  
+2 -0.107303 -0.184249 -1.246841  1.122631  0.728116 -0.674415 -0.226134  
+3 -0.125098 -0.200648 -1.156604  0.864820 -0.184876 -1.941822 -0.462656  
+4 -0.097010 -0.127036 -0.457153  0.677966  0.448008  2.220238  1.821559  
+
+[5 rows x 27 columns]
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#划分训练集和测试集</span></span><br><span class="line">n_train = train_data.shape[<span class="number">0</span>]</span><br><span class="line">train_features = torch.tensor(all_features[:n_train].values, dtype=torch.float32)</span><br><span class="line">test_features = torch.tensor(all_features[n_train:].values, dtype=torch.float32)</span><br><span class="line">train_labels = torch.tensor(</span><br><span class="line">    train_data.price.values.reshape(-<span class="number">1</span>, <span class="number">1</span>), dtype=torch.float32)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="四-建立模型"><a href="#四-建立模型" class="headerlink" title="四.建立模型"></a>四.建立模型</h2><p>参考李沐老师的mlp简洁实现,但因为测试集没有label,所以模型不匹配,最后没有用到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">#设置mlp模型超参数,用Xavier方法初始化模型参数</span><br><span class="line">in_features = train_features.shape[1]</span><br><span class="line">input_size = in_features</span><br><span class="line">hidden_size = 16</span><br><span class="line">output_size = 1</span><br><span class="line">fc1 = nn.Linear(input_size, hidden_size)</span><br><span class="line">fc2 = nn.Linear(hidden_size, output_size)</span><br><span class="line">net = nn.Sequential(nn.Flatten(), #将数据变成一维</span><br><span class="line">                    #nn.Linear(in_features,16), #输入层</span><br><span class="line">                    fc1,</span><br><span class="line">                    nn.ReLU(), #激活函数</span><br><span class="line">                    #nn.Linear(16,1)) #隐藏层</span><br><span class="line">                    fc2)</span><br><span class="line">                  </span><br><span class="line">loss = nn.L1Loss()</span><br><span class="line">batch_size,lr,num_epochs = 256 , 0.1 , 10</span><br><span class="line"></span><br><span class="line">#loss = nn.CrossEntropyLoss(reduction=&#x27;none&#x27;)</span><br><span class="line"></span><br><span class="line">#trainer = torch.optim.Adam(net.parameters(),lr=lr)</span><br><span class="line"></span><br><span class="line">trainer = torch.optim.SGD(net.parameters(),lr=lr)</span><br><span class="line"></span><br><span class="line">import torch.nn.init as init</span><br><span class="line">nn.init.xavier_uniform_(fc1.weight)</span><br><span class="line">nn.init.xavier_uniform_(fc1.weight)</span><br><span class="line">#训练模型</span><br><span class="line"></span><br><span class="line">#因为test没有label,所以还不能直接套这个模型</span><br><span class="line">train_iter = d2l.load_array((train_features, train_labels), batch_size)</span><br><span class="line"></span><br><span class="line">#test_iter=(train_features,train_labels),test_features</span><br><span class="line"></span><br><span class="line">test_iter = d2l.load_array(test_features, batch_size)</span><br><span class="line">d2l.train_ch3(net,train_iter,test_iter,loss,num_epochs,trainer)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>因为测试集没有label,所以和简洁实现冲突,只能用从零开始来实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">in_features = train_features.shape[<span class="number">1</span>]</span><br><span class="line">in_features</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>27
+</code></pre>
+<p>设置模型超参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">in_features = train_features.shape[<span class="number">1</span>]</span><br><span class="line">input_size = in_features</span><br><span class="line"><span class="comment">#hidden_size = 16</span></span><br><span class="line">hidden_size1 = <span class="number">16</span></span><br><span class="line">hidden_size2 = <span class="number">8</span></span><br><span class="line"><span class="comment">#hidden_size3 = 8</span></span><br><span class="line">output_size = <span class="number">1</span></span><br><span class="line"><span class="comment">#fc1 = nn.Linear(input_size, hidden_size)</span></span><br><span class="line"><span class="comment">#fc2 = nn.Linear(hidden_size, output_size)</span></span><br><span class="line">fc1 = nn.Linear(input_size, hidden_size1)</span><br><span class="line">fc2 = nn.Linear(hidden_size1, hidden_size2)</span><br><span class="line">fc3 = nn.Linear(hidden_size2, output_size)</span><br><span class="line"><span class="comment">#fc4 = nn.Linear(hidden_size3, output_size)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_net</span>():</span><br><span class="line">    net = nn.Sequential(nn.Flatten(), <span class="comment">#将数据变成一维</span></span><br><span class="line">                    <span class="comment">#nn.Linear(in_features,16), #输入层</span></span><br><span class="line">                    fc1,</span><br><span class="line">                    nn.ReLU(), <span class="comment">#激活函数</span></span><br><span class="line">                    <span class="comment">#nn.Linear(16,1)) #隐藏层</span></span><br><span class="line">                    fc2,</span><br><span class="line">                    nn.ReLU(), <span class="comment">#激活函数</span></span><br><span class="line">                    fc3</span><br><span class="line">                    <span class="comment">#,nn.ReLU(), #激活函数</span></span><br><span class="line">                    <span class="comment">#fc4   </span></span><br><span class="line">                    )</span><br><span class="line">    <span class="keyword">return</span> net</span><br><span class="line"></span><br><span class="line">loss = nn.L1Loss()</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch.nn.init <span class="keyword">as</span> init</span><br><span class="line">nn.init.xavier_uniform_(fc1.weight)</span><br><span class="line">nn.init.xavier_uniform_(fc1.weight)</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>Parameter containing:
+tensor([[-3.0024e-01,  2.5385e-01, -3.2322e-01, -2.3297e-01, -6.6149e-02,
+          3.5693e-01, -6.4112e-02,  1.6300e-02, -3.6862e-01, -1.5616e-01,
+         -3.2649e-01, -2.8663e-01,  2.1795e-01, -2.3374e-01,  1.0426e-01,
+         -3.1713e-01, -2.2963e-01, -4.5091e-02,  5.8626e-02, -1.7361e-01,
+         -2.8709e-01, -2.1905e-01, -2.8345e-01, -1.0926e-01,  6.2456e-02,
+         -1.0301e-01, -8.9153e-02],
+        ......(中间太长,省略了一部分输出)......
+        [-3.1734e-01,  2.0996e-02,  3.4150e-01,  3.0384e-01, -3.6609e-01,
+          2.1981e-01, -2.4452e-01, -1.1950e-03,  1.8479e-01, -1.9983e-01,
+          3.3413e-01,  2.1996e-01, -2.8354e-01, -3.2801e-01, -3.2709e-01,
+         -2.2412e-01,  2.8793e-01, -1.7312e-01,  2.8064e-01,  7.1320e-02,
+         -3.5514e-02,  1.8521e-02, -2.3619e-01,  2.8784e-01,  3.3705e-01,
+          2.3145e-01, -1.8625e-01]], requires_grad=True)
+</code></pre>
+<p>用均方根误差衡量预测效果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">log_rmse</span>(<span class="params">net, features, labels</span>):</span><br><span class="line">    <span class="comment"># 为了在取对数时进一步稳定该值，将小于1的值设置为1</span></span><br><span class="line">    clipped_preds = torch.clamp(net(features), <span class="number">1</span>, <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>))</span><br><span class="line">    rmse = torch.sqrt(loss(torch.log(clipped_preds),</span><br><span class="line">                           torch.log(labels)))</span><br><span class="line">    <span class="keyword">return</span> rmse.item()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">net, train_features, train_labels, test_features, test_labels,</span></span><br><span class="line"><span class="params">          num_epochs, learning_rate, weight_decay, batch_size</span>):</span><br><span class="line">    train_ls, test_ls = [], []</span><br><span class="line">    train_iter = d2l.load_array((train_features, train_labels), batch_size)</span><br><span class="line">    <span class="comment"># 这里使用的是Adam优化算法</span></span><br><span class="line">    optimizer = torch.optim.Adam(net.parameters(),</span><br><span class="line">                                 lr = learning_rate,</span><br><span class="line">                                 weight_decay = weight_decay)</span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">        <span class="keyword">for</span> X, y <span class="keyword">in</span> train_iter:</span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            l = loss(net(X), y)</span><br><span class="line">            l.backward()</span><br><span class="line">            optimizer.step()</span><br><span class="line">        train_ls.append(log_rmse(net, train_features, train_labels))</span><br><span class="line">        <span class="keyword">if</span> test_labels <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            test_ls.append(log_rmse(net, test_features, test_labels))</span><br><span class="line">    <span class="keyword">return</span> train_ls, test_ls</span><br></pre></td></tr></table></figure>
+
+
+
+<p>k折交叉验证</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_k_fold_data</span>(<span class="params">k, i, X, y</span>):</span><br><span class="line">    <span class="keyword">assert</span> k &gt; <span class="number">1</span></span><br><span class="line">    fold_size = X.shape[<span class="number">0</span>] // k</span><br><span class="line">    X_train, y_train = <span class="literal">None</span>, <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">        idx = <span class="built_in">slice</span>(j * fold_size, (j + <span class="number">1</span>) * fold_size)</span><br><span class="line">        X_part, y_part = X[idx, :], y[idx]</span><br><span class="line">        <span class="keyword">if</span> j == i:</span><br><span class="line">            X_valid, y_valid = X_part, y_part</span><br><span class="line">        <span class="keyword">elif</span> X_train <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            X_train, y_train = X_part, y_part</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            X_train = torch.cat([X_train, X_part], <span class="number">0</span>)</span><br><span class="line">            y_train = torch.cat([y_train, y_part], <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> X_train, y_train, X_valid, y_valid</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">k_fold</span>(<span class="params">k, X_train, y_train, num_epochs, learning_rate, weight_decay,</span></span><br><span class="line"><span class="params">           batch_size</span>):</span><br><span class="line">    train_l_sum, valid_l_sum = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">        data = get_k_fold_data(k, i, X_train, y_train)</span><br><span class="line">        net = get_net()</span><br><span class="line">        train_ls, valid_ls = train(net, *data, num_epochs, learning_rate,</span><br><span class="line">                                   weight_decay, batch_size)</span><br><span class="line">        train_l_sum += train_ls[-<span class="number">1</span>]</span><br><span class="line">        valid_l_sum += valid_ls[-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">            d2l.plot(<span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">1</span>, num_epochs + <span class="number">1</span>)), [train_ls, valid_ls],</span><br><span class="line">                     xlabel=<span class="string">&#x27;epoch&#x27;</span>, ylabel=<span class="string">&#x27;rmse&#x27;</span>, xlim=[<span class="number">1</span>, num_epochs],</span><br><span class="line">                     legend=[<span class="string">&#x27;train&#x27;</span>, <span class="string">&#x27;valid&#x27;</span>], yscale=<span class="string">&#x27;log&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;折<span class="subst">&#123;i + <span class="number">1</span>&#125;</span>，训练log rmse<span class="subst">&#123;<span class="built_in">float</span>(train_ls[-<span class="number">1</span>]):f&#125;</span>, &#x27;</span></span><br><span class="line">              <span class="string">f&#x27;验证log rmse<span class="subst">&#123;<span class="built_in">float</span>(valid_ls[-<span class="number">1</span>]):f&#125;</span>&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> train_l_sum / k, valid_l_sum / k</span><br></pre></td></tr></table></figure>
+
+
+
+<p>用k折交叉验证来选择超参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">k, num_epochs, lr, weight_decay, batch_size = <span class="number">5</span>, <span class="number">20</span>, <span class="number">0.001</span>, <span class="number">0.01</span>, <span class="number">32</span></span><br><span class="line">train_l, valid_l = k_fold(k, train_features, train_labels, num_epochs, lr,</span><br><span class="line">                          weight_decay, batch_size)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;k&#125;</span>-折验证: 平均训练log rmse: <span class="subst">&#123;<span class="built_in">float</span>(train_l):f&#125;</span>, &#x27;</span></span><br><span class="line">      <span class="string">f&#x27;平均验证log rmse: <span class="subst">&#123;<span class="built_in">float</span>(valid_l):f&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>折1，训练log rmse0.426749, 验证log rmse0.425627
+折2，训练log rmse0.416341, 验证log rmse0.418826
+折3，训练log rmse0.404806, 验证log rmse0.411668
+折4，训练log rmse0.405785, 验证log rmse0.403740
+折5，训练log rmse0.405048, 验证log rmse0.407075
+5-折验证: 平均训练log rmse: 0.411746, 平均验证log rmse: 0.413387
+</code></pre>
+<p><img src="/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_69_1.svg" alt="svg"></p>
+<p>训练数据提交预测</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train_and_pred</span>(<span class="params">train_features, test_features, train_labels, test_data,</span></span><br><span class="line"><span class="params">                   num_epochs, lr, weight_decay, batch_size</span>):</span><br><span class="line">    net = get_net()</span><br><span class="line">    train_ls, _ = train(net, train_features, train_labels, <span class="literal">None</span>, <span class="literal">None</span>,</span><br><span class="line">                        num_epochs, lr, weight_decay, batch_size)</span><br><span class="line">    d2l.plot(np.arange(<span class="number">1</span>, num_epochs + <span class="number">1</span>), [train_ls], xlabel=<span class="string">&#x27;epoch&#x27;</span>,</span><br><span class="line">             ylabel=<span class="string">&#x27;log rmse&#x27;</span>, xlim=[<span class="number">1</span>, num_epochs], yscale=<span class="string">&#x27;log&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;训练log rmse：<span class="subst">&#123;<span class="built_in">float</span>(train_ls[-<span class="number">1</span>]):f&#125;</span>&#x27;</span>)</span><br><span class="line">    <span class="comment"># 将网络应用于测试集。</span></span><br><span class="line">    preds = net(test_features).detach().numpy()</span><br><span class="line">    <span class="comment"># 将其重新格式化以导出到Kaggle</span></span><br><span class="line">    test_data[<span class="string">&#x27;price&#x27;</span>] = pd.Series(preds.reshape(<span class="number">1</span>, -<span class="number">1</span>)[<span class="number">0</span>])</span><br><span class="line">    submission = pd.concat([test_data[<span class="string">&#x27;SaleID&#x27;</span>], test_data[<span class="string">&#x27;price&#x27;</span>]], axis=<span class="number">1</span>)</span><br><span class="line">    submission.to_csv(<span class="string">&#x27;submission.csv&#x27;</span>, index=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train_and_pred(train_features, test_features, train_labels, test_data,</span><br><span class="line">               num_epochs, lr, weight_decay, batch_size)</span><br></pre></td></tr></table></figure>
+
+<pre><code>训练log rmse：0.401439
+</code></pre>
+<p><img src="/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/output_71_1.svg" alt="svg"></p>
+<h2 id="五-模型调参记录"><a href="#五-模型调参记录" class="headerlink" title="五.模型调参记录"></a>五.模型调参记录</h2><p>一层mlp, hidden_size&#x3D;16, k&#x3D;5, num_epochs&#x3D;100, lr&#x3D;0.001, weight_decay&#x3D;0.01, batch_size&#x3D;32</p>
+<p>平均验证log rmse &#x3D;0.530819</p>
+<p>评价:模型明显不够复杂,现增加模型复杂度.epochs&#x3D;40~60左右就够了,多了loss不再下降</p>
+<img src="image-20230330160727999.png" alt="image-20230330160727999" style="zoom:50%;" />
+
+<p>两层mlp, hidden_size1&#x3D;16, hidden_size2&#x3D;8, k&#x3D;5, num_epochs&#x3D;10, lr&#x3D;0.001, weight_decay&#x3D;0.01,</p>
+<p>batch_size&#x3D;32</p>
+<p>平均验证log rmse &#x3D;0.424043</p>
+<p>评价:模型复杂后即使epochs很小loss也减小了,再把epochs增加到50</p>
+<img src="image-20230330162512647.png" alt="image-20230330162512647" style="zoom:50%;" />
+
+<p>两层mlp, hidden_size1&#x3D;16, hidden_size2&#x3D;8, k&#x3D;5, num_epochs&#x3D;50, lr&#x3D;0.001, weight_decay&#x3D;0.01,</p>
+<p>batch_size&#x3D;32</p>
+<p>平均验证log rmse &#x3D;0.396399</p>
+<p>评价:和10 epochs 结果差别不大,但是运行时间长了很多,没必要</p>
+<img src="image-20230330164508079.png" alt="image-20230330164508079" style="zoom:50%;" />
+
+<p>两层mlp, hidden_size1&#x3D;16, hidden_size2&#x3D;8, k&#x3D;5, num_epochs&#x3D;20, lr&#x3D;0.002, weight_decay&#x3D;0.01,batch_size&#x3D;32</p>
+<p>平均验证log rmse &#x3D;0.401550</p>
+<p>评价:学习率过高,反而出现了过拟合</p>
+<img src="image-20230330165340646.png" alt="image-20230330165340646" style="zoom:50%;" />
+
+<p>两层mlp, hidden_size1&#x3D;16, hidden_size2&#x3D;8, k&#x3D;5, num_epochs&#x3D;20, lr&#x3D;0.001, weight_decay&#x3D;0.01,batch_size&#x3D;32</p>
+<p>平均验证log rmse &#x3D;0.375542</p>
+<p>评价:是这几次里最好的结果了,但是loss曲线一直在波动.说明这应该几乎就是这个模型的极限了,可以再加一层试一试.</p>
+<img src="image-20230330170509650.png" alt="image-20230330170509650" style="zoom:50%;" />
+
+<p>三层mlp, hidden_size1&#x3D;16, hidden_size2&#x3D;8, hidden_size3&#x3D;16, k&#x3D;5, num_epochs&#x3D;20, lr&#x3D;0.001, weight_decay&#x3D;0.01,batch_size&#x3D;64</p>
+<p>平均验证log rmse &#x3D; 0.412497</p>
+<p>评价:loss很大,可能是三层的原因,也可能是hidden_size 设置的原因,再调一下hidden_size.还有一个线性,训练的loss平均要比验证loss小,说明层数高时有一点过拟合现象.</p>
+<p>这一次改了mlp层数,和batch_size.同时改了两个也不清楚是谁的锅. epoch 改回32后loss基本在0.40左右,说明两个改动对于loss都是副作用,epoch改回的训练就不放上去了</p>
+<img src="image-20230330171219491.png" alt="image-20230330171219491" style="zoom:50%;" />
+
+
+
+<p>三层mlp, hidden_size1&#x3D;16, hidden_size2&#x3D;12, hidden_size3&#x3D;8, k&#x3D;5, num_epochs&#x3D;20, lr&#x3D;0.001, weight_decay&#x3D;0.01, batch_size&#x3D;32</p>
+<p>平均验证log rmse &#x3D; 0.410163</p>
+<p>评价:这次把隐藏层的神经元数量改为递减,loss在0.41左右,说明这样的神经网络效果也不好,看最后的epoch曲线不是因为epoch数量太少.随着epoch增加,train和valid的loss差距在增大,说明正在逐渐出现过拟合.</p>
+<img src="image-20230330172530787.png" alt="image-20230330172530787" style="zoom:50%;" />
+
+<p>三层mlp, hidden_size1&#x3D;16, hidden_size2&#x3D;16, hidden_size3&#x3D;16, k&#x3D;5, num_epochs&#x3D;20, lr&#x3D;0.001, weight_decay&#x3D;0.01, batch_size&#x3D;32</p>
+<p>平均验证log rmse &#x3D; 4.1小一点</p>
+<p>评价:只训练了一折,效果不好不再浪费时间.</p>
+<p>三层mlp, hidden_size1&#x3D;16, hidden_size2&#x3D;8, hidden_size3&#x3D;8, k&#x3D;5, num_epochs&#x3D;20, lr&#x3D;0.001, weight_decay&#x3D;0.01, batch_size&#x3D;32</p>
+<p>平均验证log rmse &#x3D; 4.1左右</p>
+<p>评价:效果不好,不再继续.但是三层mlp为什么拟合效果还不如两层?</p>
+<p>两层mlp, hidden_size1&#x3D;16, hidden_size2&#x3D;8, k&#x3D;5, num_epochs&#x3D;20, lr&#x3D;0.001, weight_decay&#x3D;0.01, batch_size&#x3D;32</p>
+<p>平均验证log rmse &#x3D; 0.41左右</p>
+<p>评价:再次验证上次最好的超参数,检验是否是偶然因素.说明上次调出来的是偶然因素,loss一直在0.4左右徘徊,调整参数并没有很大的改变,直接上测试集看看效果吧</p>
+<p>最终的训练loss :0.401439</p>
+<img src="image-20230330175100356.png" alt="image-20230330175100356" style="zoom:50%;" />
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 深度学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/03/30/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" rel="next" title="动手学深度学习-二手车交易价格预测-线性模型">
+                <i class="fa fa-chevron-left"></i> 动手学深度学习-二手车交易价格预测-线性模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar2.gif"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/BugMaker11" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wubo6543210@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">二手车交易价格预测-多层感知机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80-%E5%AF%BC%E5%8C%85"><span class="nav-number">1.1.</span> <span class="nav-text">一.导包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C-%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.</span> <span class="nav-text">二.下载数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE"><span class="nav-number">1.3.</span> <span class="nav-text">三.处理数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B-%E5%BB%BA%E7%AB%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.4.</span> <span class="nav-text">四.建立模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94-%E6%A8%A1%E5%9E%8B%E8%B0%83%E5%8F%82%E8%AE%B0%E5%BD%95"><span class="nav-number">1.5.</span> <span class="nav-text">五.模型调参记录</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">miandui</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">20.9k</span>
+  
+</div>
+
+<!-- 
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+ -->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
